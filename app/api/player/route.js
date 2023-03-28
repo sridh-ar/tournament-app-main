@@ -16,9 +16,9 @@ export async function GET(request) {
 export async function POST(request) {
   const req = await request.json();
   let insertQuery = `INSERT INTO player (name, dob, age, contact_number, team_name, jersey_name, jersey_size, jersey_no, area, player_photo, player_role,
-      batting_style, bowler, bowling_style, wicket_keeper)
+      batting_style, bowling_style)
       VALUES ('${req[0]}','${req[1]}','${req[2]}','${req[3]}','${req[4]}','${req[5]}','${req[6]}','${req[7]}','${req[8]}','${req[9]}','${req[10]}','${req[11]}',
-      '${req[12]}','${req[13]}',${req[14]})`;
+      '${req[12]}')`;
   let result;
   try {
     result = await query(insertQuery);

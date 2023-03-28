@@ -113,7 +113,7 @@ const inputNames = [
       },
       {
         id: 3,
-        value: "Bastsman",
+        value: "Batsman",
       },
       {
         id: 4,
@@ -141,31 +141,31 @@ const inputNames = [
       },
     ],
   },
-  {
-    id: 13,
-    title: "Bowler",
-    type: "select",
-    required: true,
-    options: [
-      {
-        id: 1,
-        value: "",
-      },
-      {
-        id: 2,
-        value: "Right-Arm",
-      },
-      {
-        id: 3,
-        value: "Left-Arm",
-      },
-    ],
-  },
+  // {
+  //   id: 13,
+  //   title: "Bowler",
+  //   type: "select",
+  //   required: true,
+  //   options: [
+  //     {
+  //       id: 1,
+  //       value: "",
+  //     },
+  //     {
+  //       id: 2,
+  //       value: "Right-Arm",
+  //     },
+  //     {
+  //       id: 3,
+  //       value: "Left-Arm",
+  //     },
+  //   ],
+  // },
   {
     id: 14,
     title: "Bowling Style",
     type: "select",
-    required: true,
+    required: false,
     options: [
       {
         id: 1,
@@ -185,26 +185,26 @@ const inputNames = [
       },
     ],
   },
-  {
-    id: 15,
-    title: "Wicket Keeper",
-    type: "select",
-    required: true,
-    options: [
-      {
-        id: 1,
-        value: "",
-      },
-      {
-        id: 2,
-        value: "true",
-      },
-      {
-        id: 3,
-        value: "false",
-      },
-    ],
-  },
+  // {
+  //   id: 15,
+  //   title: "Wicket Keeper",
+  //   type: "select",
+  //   required: true,
+  //   options: [
+  //     {
+  //       id: 1,
+  //       value: "",
+  //     },
+  //     {
+  //       id: 2,
+  //       value: "true",
+  //     },
+  //     {
+  //       id: 3,
+  //       value: "false",
+  //     },
+  //   ],
+  // },
 ];
 
 const container = {
@@ -260,7 +260,7 @@ export default function Page() {
     event.preventDefault();
     let values = [];
     let imageResult = "";
-    for (let i = 0; i < 15; i++) {
+    for (let i = 0; i < 13; i++) {
       //storing the image
       if (i == 9) {
         imageResult = await handleImageChange(event.target[i].files[0]);
