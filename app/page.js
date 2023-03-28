@@ -43,11 +43,7 @@ export default function Home() {
         animate="visible"
         variants={container}
       >
-        <Link
-          href={
-            window.innerWidth < 500 ? "/" : loggedIn ? "/dashboard" : "/signin"
-          }
-        >
+        <Link href={loggedIn ? "/dashboard" : "/signin"}>
           <Image
             className={styles.logo}
             src="/leo.png"
@@ -70,14 +66,12 @@ export default function Home() {
           className="font-medium mr-3 cursor-pointer sm:w-full "
           href="/playerRegister"
         >
-          {window.innerWidth < 500
+          {/* {window.innerWidth < 500
             ? "Register for FBPL"
-            : "Click here to Register for the FBPL"}
+            : "Click here to Register for the FBPL"} */}
+          Register for FBPL
         </a>
-        <ArrowSmallRightIcon
-          height={window.innerWidth < 500 ? 20 : 30}
-          width={30}
-        />
+        <ArrowSmallRightIcon height={30} width={30} />
       </motion.div>
     </main>
   );
