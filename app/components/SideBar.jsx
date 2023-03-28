@@ -17,9 +17,9 @@ export default function SideBar({ whichOne, active, playerCount }) {
   }
   return (
     <div className="bg-white w-3/12 p-5 shadow-md">
-      <div className="flex  items-center justify-between pt-5 p-1">
+      <div className="flex  items-center justify-evenly pt-5 p-1">
         <Image src="/leo.png" alt="Next.js Logo" width={35} height={35} />
-        <p className="font-semibold">FireBoys Premier League</p>
+        <p className="font-semibold text-sm">FireBoys Premier League</p>
       </div>
       <div className=" h-px m-3 bg-gray-400" />
 
