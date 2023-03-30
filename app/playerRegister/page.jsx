@@ -324,8 +324,8 @@ export default function Page() {
       >
         <CheckCircleIcon width={100} height={100} color="green" />
         <p className="font-bold mt-4 text-xl text-center">
-          Thanks for Registering! <br /> We'll send Notification once Your
-          Registeration Approved
+          Thanks for Registering! <br />{" "}
+          {"We'll send Notification once Your Registeration Approved"}
         </p>
         <p className="font-bold mt-4">
           Admin Support:{" "}
