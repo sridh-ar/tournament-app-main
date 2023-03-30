@@ -23,7 +23,7 @@ export default function SideBar({ whichOne, active, playerCount }) {
       </div>
       <div className=" h-px m-3 bg-gray-400" />
 
-      {/* DashBoard Items */}
+      {/* -----------DashBoard Items---------- */}
       <div
         className={`flex items-center m-5 cursor-pointer hover:bg-indigo-200 p-2 px-3 rounded ${
           active == "dashboard" ? "bg-indigo-200 bg-opacity-30" : ""

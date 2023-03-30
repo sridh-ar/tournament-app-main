@@ -24,7 +24,7 @@ export async function POST(request) {
   let result;
   try {
     result = await query(insertQuery);
-    updateResult = await query(updateQuery);
+    let updateResult = await query(updateQuery);
   } catch (err) {
     console.log(`Error in the select query - ${err.message}`);
   }

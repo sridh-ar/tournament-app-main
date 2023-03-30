@@ -44,7 +44,7 @@ export default function SignIn({ isSignUp }) {
   };
   return (
     <motion.form
-      className="bg-white w-2/6 p-5 rounded-lg items-center justify-center flex flex-col shadow"
+      className="bg-white sm:w-2/6 p-5 rounded-lg items-center justify-center flex flex-col shadow w-full"
       onSubmit={handleSubmit}
       variants={container}
       initial="hidden"

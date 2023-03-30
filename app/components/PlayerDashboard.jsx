@@ -32,7 +32,7 @@ export default function PlayerDashboard() {
         setisLoading(false);
       })
       .catch((error) => console.error(error));
-  }, []);
+  }, [isLoading]);
 
   function handleSearch(value) {
     if (value.length > 0) {
@@ -87,6 +87,8 @@ export default function PlayerDashboard() {
               id={item.id}
               area={item.area}
               image={item.photo}
+              approved={item.approved}
+              handleApproved={() => setisLoading(true)}
             />
           ))}
       </motion.div>

@@ -3,6 +3,7 @@ import Image from "next/image";
 import { useState } from "react";
 import PlayersCardFull from "./PlayerCardFull";
 import { motion } from "framer-motion";
+import { CheckCircleIcon, ClockIcon } from "@heroicons/react/24/outline";
 
 export default function PlayersCard({
   name,
@@ -13,6 +14,8 @@ export default function PlayersCard({
   id,
   area,
   image,
+  approved,
+  handleApproved,
 }) {
   const [isOpen, setIsOpen] = useState(false);
   // function handleModel(target) {
@@ -28,9 +31,35 @@ export default function PlayersCard({
       opacity: 1,
     },
   };
+
+  function handleApprove() {
+    fetch(
+      `/api/player?query=select gpay_no,transaction_id from payment_details where player_no ='${id}'`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        if (
+          confirm(
+            `Do you want to Approve this Player?\nGpay No: ${data[0].gpay_no} \nTransID: ${data[0].transaction_id}`
+          )
+        ) {
+          fetch(
+            `/api/player?query=update player set approved = true where id ='${id}'`
+          )
+            .then((response) => response.json())
+            .then((data) => {
+              // approved = true;
+              handleApproved();
+            })
+            .catch((error) => console.error(error));
+        }
+      })
+      .catch((error) => console.error(error));
+  }
   return (
     <motion.div
-      className="bg-white rounded-md m-5 p-3 items-center shadow grid grid-cols-3"
+      className="bg-white rounded-md m-5 p-3 items-center shadow grid grid-cols-3 relative"
       variants={itemAnimation}
     >
       <Image
@@ -75,6 +104,25 @@ export default function PlayersCard({
           </p>
         </div>
       </div>
+      {/* Pending or Approve Image */}
+      {approved == true && (
+        <CheckCircleIcon
+          width={25}
+          height={25}
+          color="green"
+          className="absolute top-2 right-2"
+        />
+      )}
+      {!approved && (
+        <ClockIcon
+          width={25}
+          height={25}
+          color="orange"
+          className="absolute top-2 right-2 cursor-pointer"
+          onClick={handleApprove}
+        />
+      )}
+
       {isOpen && (
         <PlayersCardFull
           name={name}

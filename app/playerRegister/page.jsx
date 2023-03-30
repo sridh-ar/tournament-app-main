@@ -5,6 +5,7 @@ import Pagination from "../components/Pagination";
 import { CheckCircleIcon } from "@heroicons/react/24/outline";
 import { useEffect, useState } from "react";
 import { makePayment } from "@/lib/payment/paymentGateway";
+import PaymentPage from "../components/PaymentPage";
 
 const inputNames = [
   {
@@ -93,7 +94,7 @@ const inputNames = [
   },
   {
     id: 10,
-    title: "Player Photo",
+    title: "Player Photo(Less than 1Mb)",
     type: "file",
     required: true,
   },
@@ -231,6 +232,7 @@ export default function Page() {
   // const [base64Image, setBase64Image] = useState("");
   const [isPaid, setisPaid] = useState(false);
   const [id, setId] = useState("");
+  // const [tempData, settempData] = useState([]);
   const router = useRouter();
 
   async function handleImageChange(event) {
@@ -271,52 +273,86 @@ export default function Page() {
         values.push(event.target[i].value);
       }
     }
+    values.push(false);
     console.log("Values for the player - ", values);
+    // settempData(values);
     //Payment calling
-    if (imageResult) {
-      const result = await makePayment(values[0], "", values[3], 111);
-      if (result) {
-        //insert into table
-        fetch("/api/player", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(values),
-        })
-          .then((response) => response.json())
-          .then((data) => setId(data.insertId))
-          .catch((error) => console.error(error));
+    // if (imageResult) {
+    //   const result = await makePayment(values[0], "", values[3], 111);
+    //   if (result) {
+    //     //insert into table
+    fetch("/api/player", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(values),
+    })
+      .then((response) => response.json())
+      .then((data) => setId(data.insertId))
+      .catch((error) => console.error(error));
 
-        setisPaid(true);
-        setTimeout(() => {
-          router.push("/");
-        }, 5000);
-      } else {
-        alert("Something went wrong, please contact Admin");
-      }
-    }
+    //     setisPaid(true);
+    //     setTimeout(() => {
+    //       router.push("/");
+    //     }, 5000);
+    //   } else {
+    //     alert("Something went wrong, please contact Admin");
+    //   }
+    // }
   }
 
-  return (
-    <form
-      className="flex flex-col justify-between items-center p-5 h-screen"
-      onSubmit={handleSubmit}
-    >
+  if (id && !isPaid) {
+    return (
+      <PaymentPage
+        submit={() => {
+          setisPaid(true);
+          setTimeout(() => {
+            router.push("./");
+          }, 10000);
+        }}
+        id={id}
+      />
+    );
+  } else if (isPaid) {
+    return (
       <motion.div
-        className="bg-white w-full p-5 rounded-lg items-center justify-center flex flex-col shadow"
+        className="flex flex-col justify-center items-center h-screen bg-white "
         variants={container}
         initial="hidden"
         animate="visible"
       >
-        <p className="font-semibold text-lg m-5">Player Register Form</p>
-        {/* <Pagination third /> */}
-        {!isPaid && (
+        <CheckCircleIcon width={100} height={100} color="green" />
+        <p className="font-bold mt-4 text-xl text-center">
+          Thanks for Registering! <br /> We'll send Notification once Your
+          Registeration Approved
+        </p>
+        <p className="font-bold mt-4">
+          Admin Support:{" "}
+          <span className="font-semibold text-gray-500">8682021651</span>{" "}
+        </p>
+      </motion.div>
+    );
+  } else {
+    return (
+      <form
+        className="flex flex-col justify-between items-center h-full p-5"
+        onSubmit={handleSubmit}
+      >
+        <motion.div
+          className="bg-white w-full p-5 rounded-lg items-center justify-center flex flex-col shadow-md"
+          variants={container}
+          initial="hidden"
+          animate="visible"
+        >
+          <p className="font-semibold text-lg m-5">Player Register Form</p>
+          {/* <Pagination third /> */}
+
           <>
-            <div className="grid grid-cols-2 gap-5 w-full p-5 ">
+            <div className="grid grid-cols-2 gap-5 w-full p-5 text-sm">
               {inputNames.map((item) => (
                 <div key={item.id}>
-                  <motion.label className="text-sm" variants={itemAnimation}>
+                  <motion.label variants={itemAnimation}>
                     {item.title}
                     {item.required && <span className="text-red-600"> *</span>}
                   </motion.label>
@@ -326,7 +362,7 @@ export default function Page() {
                       variants={itemAnimation}
                       type={item.type}
                       required={item.required}
-                      placeholder={`Enter your ${item.title}`}
+                      placeholder={`${item.title}`}
                       className={
                         item.type == "file"
                           ? "w-full outline-0  h-8 text-sm p-1 m-1"
@@ -358,9 +394,7 @@ export default function Page() {
               <h3 className="font-bold">Terms & Conditons:</h3>
               <ol className="list-disc relative left-10 my-3 w-[90%] sm:w-full break-words">
                 <li>Player Registration Amount is Rs.111/-</li>
-                <li className="break-words">
-                  Players Should be available for the whole tournament{" "}
-                </li>
+                <li>Players Should be available for the whole tournament</li>
                 <li>
                   If the players not available with out any valid reason, player
                   cannot participate the tournament for next 2 seasons
@@ -372,25 +406,17 @@ export default function Page() {
               </ol>
             </div>
           </>
-        )}
-        {isPaid && (
-          <div className="flex flex-col justify-center items-center m-10">
-            <CheckCircleIcon width={100} height={100} color="green" />
-            <p className="font-bold mt-4 text-xl">Thanks for Registering!</p>
-          </div>
-        )}
 
-        {!isPaid && (
           <motion.button
             type="submit"
             variants={itemAnimation}
-            className="w-48 rounded bg-indigo-400 h-10 p-2 flex justify-center items-center m-3 cursor-pointer text-white relative"
+            className="w-40 rounded bg-indigo-400 h-10 p-2 flex justify-center items-center m-3 cursor-pointer text-white relative"
             whileHover={{ scale: 1.1 }}
           >
-            Click & Pay to Register
+            Pay to Register
           </motion.button>
-        )}
-      </motion.div>
-    </form>
-  );
+        </motion.div>
+      </form>
+    );
+  }
 }

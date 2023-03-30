@@ -32,7 +32,7 @@ export default function NewTeamPlayer({ closeFunction, selectedTeam }) {
   const [playerData, setPlayerData] = useState([]);
   function handleChange(target) {
     if (target.placeholder.includes("Player No")) {
-      const query = `select name,player_role from player where id = ${
+      const query = `select name,player_role from player where approved = true and id = ${
         parseInt(target.value) || 0
       }`;
       fetch(`/api/player?query=${query}`)
@@ -50,9 +50,11 @@ export default function NewTeamPlayer({ closeFunction, selectedTeam }) {
     fetch(`/api/player?query=${query}`)
       .then((response) => response.json())
       .then((data) => {
+        console.log(data);
         if (data.length > 0) {
-          // console.log(data.length > 0);
           alert("Player already part of another team or Not Available");
+        } else if (data.approved?.toString() == "false") {
+          alert("Player is Not Approved by Admin");
         } else {
           let values = [];
           for (let i = 0; i < 4; i++) {

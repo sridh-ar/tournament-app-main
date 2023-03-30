@@ -22,7 +22,7 @@ export default function Table({ selectedTeamModal }) {
         setisLoading(false);
       })
       .catch((error) => console.error(error));
-  }, [isOpen]);
+  }, [isOpen, isAddOpen]);
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -214,7 +214,10 @@ export default function Table({ selectedTeamModal }) {
       )}
       {isAddOpen && (
         <NewTeamPlayer
-          closeFunction={() => setisAddOpen(false)}
+          closeFunction={() => {
+            setisAddOpen(false);
+            setisLoading(true);
+          }}
           selectedTeam={selectedTeam}
         />
       )}
