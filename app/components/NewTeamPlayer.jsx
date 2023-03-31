@@ -53,8 +53,10 @@ export default function NewTeamPlayer({ closeFunction, selectedTeam }) {
       .then((data) => {
         console.log(data);
         if (data.length > 0) {
+          setLoading(false);
           alert("Player already part of another team or Not Available");
         } else if (data.approved?.toString() == "false") {
+          setLoading(false);
           alert("Player is Not Approved by Admin");
         } else {
           let values = [];
