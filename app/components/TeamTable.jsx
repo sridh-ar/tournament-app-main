@@ -25,8 +25,8 @@ export default function TeamTable({ team_detail }) {
 
   function handleImageDownload() {
     setisGenerating(true);
-    const query = `select CONVERT(owner_photo USING utf8) as ownerphoto, CONVERT(captain_photo USING utf8) as captainphoto,owner,captain from team where id = ${team_detail[0]}`;
-    const query1 = `select name,CONVERT(player_photo USING utf8) as photo from player pl join team_players tp on tp.player_no = pl.id where tp.team_id = ${team_detail[0]}`;
+    const query = `select owner_photo as ownerphoto,captain_photo as captainphoto,owner,captain from team where id = ${team_detail[0]}`;
+    const query1 = `select name,player_photo as photo from player pl join team_players tp on tp.player_no = pl.id where tp.team_id = ${team_detail[0]}`;
     fetch(`/api/team?query=${query}`)
       .then((response) => response.json())
       .then((data) => {
@@ -37,7 +37,6 @@ export default function TeamTable({ team_detail }) {
       .then((response) => response.json())
       .then((data) => {
         setteamImage(data);
-        setisGenerating(false);
       })
       .catch((error) => console.error(error));
   }
@@ -47,7 +46,10 @@ export default function TeamTable({ team_detail }) {
         <TeamImage
           teamData={teamImage}
           ownerData={ownerData}
-          handleDownload={(url) => setImageUrl(url)}
+          handleDownload={(url) => {
+            setImageUrl(url);
+            setisGenerating(false);
+          }}
         />
       )}
 

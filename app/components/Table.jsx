@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import NewTeam from "./NewTeam";
 import NewTeamPlayer from "./NewTeamPlayer";
 import { motion } from "framer-motion";
+import { uploadBytes, ref, getStorage, getDownloadURL } from "firebase/storage";
+import { firebaseApp } from "@/lib/firebase";
 
 export default function Table({ selectedTeamModal }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -13,9 +15,7 @@ export default function Table({ selectedTeamModal }) {
   const [isLoading, setisLoading] = useState(true);
 
   useEffect(() => {
-    fetch(
-      "/api/team?query=select *,CONVERT(team_photo USING utf8) as teamphoto from team"
-    )
+    fetch("/api/team?query=select * from team")
       .then((response) => response.json())
       .then((data) => {
         setTeamData(data);
@@ -30,15 +30,21 @@ export default function Table({ selectedTeamModal }) {
     let imageResult = "";
     for (let i = 0; i < 10; i++) {
       if (i == 7 || i == 8 || i == 9) {
-        imageResult = await handleImageChange(event.target[i].files[0]);
-        // console.log("imageResult", imageResult);
-        // values.push(base64Image);
-        values.push(imageResult);
+        imageResult = event.target[i].files[0];
+        const storage = getStorage(firebaseApp);
+        const imageRef = ref(
+          storage,
+          `fbpl/team/Player_${Math.floor(Math.random() * 90000) + 10000}`
+        );
+        await uploadBytes(imageRef, imageResult).then(async (res) => {
+          await getDownloadURL(res.ref).then((res) => {
+            values.push(res);
+          });
+        });
       } else {
         values.push(event.target[i].value);
       }
     }
-    console.log("Values for the player - ", values);
     fetch("/api/team", {
       method: "POST",
       headers: {
@@ -52,29 +58,6 @@ export default function Table({ selectedTeamModal }) {
         setisLoading(true);
       })
       .catch((error) => console.error(error));
-  }
-
-  async function handleImageChange(event) {
-    return new Promise(async (resolve) => {
-      const file = event;
-      if (file) {
-        if (file.size > 1097152) {
-          // setBase64Image("");
-          alert("File size should be less than 1Mb.");
-        } else {
-          const reader = new FileReader();
-
-          reader.addEventListener("load", () => {
-            const base64String = reader.result.split(",")[1];
-            // setBase64Image(base64String);
-            // console.log("base64String", base64String);
-            return resolve(base64String);
-          });
-
-          reader.readAsDataURL(file);
-        }
-      }
-    });
   }
 
   const container = {
@@ -124,8 +107,8 @@ export default function Table({ selectedTeamModal }) {
             >
               <td>
                 <div className="grid grid-cols-3 items-center justify-items-center gap-0">
-                  <Image
-                    src={`data:image/*;base64,${item.teamphoto}`}
+                  <img
+                    src={item.team_photo}
                     alt="Rounded avatar"
                     width={30}
                     height={30}

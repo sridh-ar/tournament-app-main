@@ -18,11 +18,6 @@ export default function PlayersCard({
   handleApproved,
 }) {
   const [isOpen, setIsOpen] = useState(false);
-  // function handleModel(target) {
-  //   if (target == "DIV") {
-  //     setIsOpen(false);
-  //   }
-  // }
 
   const itemAnimation = {
     hidden: { y: 50, opacity: 0 },
@@ -38,21 +33,33 @@ export default function PlayersCard({
     )
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
-        if (
-          confirm(
-            `Do you want to Approve this Player?\nGpay No: ${data[0].gpay_no} \nTransID: ${data[0].transaction_id}`
-          )
-        ) {
-          fetch(
-            `/api/player?query=update player set approved = true where id ='${id}'`
-          )
-            .then((response) => response.json())
-            .then((data) => {
-              // approved = true;
-              handleApproved();
-            })
-            .catch((error) => console.error(error));
+        if (data.length > 0) {
+          if (
+            confirm(
+              `Do you want to Approve this Player?\nGpay No: ${data[0].gpay_no} \nTransID: ${data[0].transaction_id}`
+            )
+          ) {
+            fetch(
+              `/api/player?query=update player set approved = true where id ='${id}'`
+            )
+              .then((response) => response.json())
+              .then((data) => {
+                // approved = true;
+                handleApproved();
+              })
+              .catch((error) => console.error(error));
+          }
+        } else {
+          if (
+            confirm(`No Payment Data Found. Do you want to delete this Player?`)
+          ) {
+            fetch(`/api/player?query=delete from player where id ='${id}'`)
+              .then((response) => response.json())
+              .then((data) => {
+                handleApproved();
+              })
+              .catch((error) => console.error(error));
+          }
         }
       })
       .catch((error) => console.error(error));
@@ -63,12 +70,13 @@ export default function PlayersCard({
       variants={itemAnimation}
     >
       <Image
-        src={`data:image/*;base64,${image}`}
+        priority
+        src={image}
         alt="Rounded avatar"
         width={200}
         height={200}
-        className="w-28 h-32 object-cover ml-5 rounded col-span-1 ring-1 ring-gray-200 p-1 shadow-md"
-        onClick={() => setIsOpen(true)}
+        className={`w-28 h-32 object-cover ml-5 rounded col-span-1 ring-1 ring-gray-200 p-1 shadow-md `}
+        loading="eager"
       />
       <div
         className="text-sm grid grid-cols-2 col-span-2"

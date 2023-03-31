@@ -4,12 +4,12 @@ import { motion } from "framer-motion";
 const inputNames = [
   {
     id: 1,
-    name: "Gpay name",
+    name: "Your Gpay Name",
     type: "text",
   },
   {
     id: 2,
-    name: "Gpay number",
+    name: "Your Gpay number",
     type: "number",
   },
   {
@@ -41,14 +41,12 @@ const itemAnimation = {
 
 export default function PaymentPage({ id, submit }) {
   function handleSubmit(event) {
-    console.log(event);
     event.preventDefault();
     let values = [];
     for (let i = 0; i < 3; i++) {
       values.push(event.target[i].value);
     }
     values.push(id);
-    console.log(values);
     fetch("/api/payment", {
       method: "POST",
       headers: {
@@ -131,7 +129,7 @@ export default function PaymentPage({ id, submit }) {
         className="w-32 rounded bg-indigo-400 h-10 p-2 flex justify-center items-center m-3 cursor-pointer text-white"
         whileHover={{ scale: 1.1 }}
       >
-        Sumbit
+        Submit
       </motion.button>
     </motion.form>
   );

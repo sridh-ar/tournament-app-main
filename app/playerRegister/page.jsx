@@ -1,11 +1,11 @@
 "use client";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
-import Pagination from "../components/Pagination";
 import { CheckCircleIcon } from "@heroicons/react/24/outline";
-import { useEffect, useState } from "react";
-import { makePayment } from "@/lib/payment/paymentGateway";
+import { useState } from "react";
 import PaymentPage from "../components/PaymentPage";
+import { uploadBytes, ref, getStorage, getDownloadURL } from "firebase/storage";
+import { firebaseApp } from "@/lib/firebase";
 
 const inputNames = [
   {
@@ -94,7 +94,7 @@ const inputNames = [
   },
   {
     id: 10,
-    title: "Player Photo(Less than 1Mb)",
+    title: "Player Photo",
     type: "file",
     required: true,
   },
@@ -231,44 +231,31 @@ const itemAnimation = {
 export default function Page() {
   // const [base64Image, setBase64Image] = useState("");
   const [isPaid, setisPaid] = useState(false);
+  const [isLoading, setisLoading] = useState(false);
   const [id, setId] = useState("");
-  // const [tempData, settempData] = useState([]);
   const router = useRouter();
 
-  async function handleImageChange(event) {
-    return new Promise(async (resolve) => {
-      const file = event;
-      if (file) {
-        if (file.size > 1097152) {
-          // setBase64Image("");
-          alert("File size should be less than 1Mb.");
-        } else {
-          const reader = new FileReader();
-
-          reader.addEventListener("load", () => {
-            const base64String = reader.result.split(",")[1];
-            // setBase64Image(base64String);
-            // console.log("base64String", base64String);
-            return resolve(base64String);
-          });
-
-          reader.readAsDataURL(file);
-        }
-      }
-    });
-  }
-
   async function handleSubmit(event) {
+    setisLoading(true);
+
     event.preventDefault();
     let values = [];
     let imageResult = "";
     for (let i = 0; i < 13; i++) {
       //storing the image
       if (i == 9) {
-        imageResult = await handleImageChange(event.target[i].files[0]);
-        // console.log("imageResult", imageResult);
-        // values.push(base64Image);
-        values.push(imageResult);
+        //Storing it in Firebase
+        imageResult = event.target[i].files[0];
+        const storage = getStorage(firebaseApp);
+        const imageRef = ref(
+          storage,
+          `fbpl/Player_${Math.floor(Math.random() * 90000) + 10000}`
+        );
+        await uploadBytes(imageRef, imageResult).then(async (res) => {
+          await getDownloadURL(res.ref).then((res) => {
+            values.push(res);
+          });
+        });
       } else {
         values.push(event.target[i].value);
       }
@@ -289,7 +276,10 @@ export default function Page() {
       body: JSON.stringify(values),
     })
       .then((response) => response.json())
-      .then((data) => setId(data.insertId))
+      .then((data) => {
+        setId(data.insertId);
+        setisLoading(false);
+      })
       .catch((error) => console.error(error));
 
     //     setisPaid(true);
@@ -325,12 +315,20 @@ export default function Page() {
         <CheckCircleIcon width={100} height={100} color="green" />
         <p className="font-bold mt-4 text-xl text-center">
           Thanks for Registering! <br />{" "}
-          {"We'll send Notification once Your Registeration Approved"}
+          {
+            "Once your payment is verified by Admin Team, then you will be Elligble for the Tournament"
+          }
         </p>
         <p className="font-bold mt-4">
           Admin Support:{" "}
           <span className="font-semibold text-gray-500">8682021651</span>{" "}
         </p>
+      </motion.div>
+    );
+  } else if (isLoading) {
+    return (
+      <motion.div className="flex flex-col justify-center items-center h-screen  ">
+        <img src="/loader.gif" alt="loader" class="w-52 h-52" />
       </motion.div>
     );
   } else {

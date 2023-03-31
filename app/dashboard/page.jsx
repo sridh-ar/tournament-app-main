@@ -2,7 +2,6 @@
 import { validateToken } from "@/lib/auth/auth";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import PlayersCardFull from "../components/PlayerCardFull";
 import PlayerDashboard from "../components/PlayerDashboard";
 import SideBar from "../components/SideBar";
 import Table from "../components/Table";

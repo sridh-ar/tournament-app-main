@@ -2,6 +2,8 @@
 import { useEffect, useState } from "react";
 import PlayersCard from "../components/PlayersCard";
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
+import html2canvas from "html2canvas";
 
 const container = {
   hidden: { opacity: 1, scale: 0 },
@@ -19,14 +21,13 @@ export default function PlayerDashboard() {
   const [teamData, setTeamData] = useState([]);
   const [filteredData, setfilteredData] = useState([]);
   const [isLoading, setisLoading] = useState(true);
+  const [imageUrl, setImageUrl] = useState("");
+  const router = useRouter();
 
   useEffect(() => {
-    fetch(
-      "/api/player?query=select *,CONVERT(player_photo USING utf8) as photo from player"
-    )
+    fetch("/api/player?query=select * from player")
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         setTeamData(data);
         setfilteredData(data);
         setisLoading(false);
@@ -40,6 +41,13 @@ export default function PlayerDashboard() {
     } else {
       setfilteredData(teamData);
     }
+  }
+  async function handleDownload() {
+    const element = document.getElementById("playersListPdf");
+    html2canvas(element).then((canvas) => {
+      const url = canvas.toDataURL();
+      setImageUrl(url);
+    });
   }
   return (
     <div className="m-5 overflow-y-auto p-1 w-full flex flex-col items-center ">
@@ -63,10 +71,27 @@ export default function PlayerDashboard() {
         </div>
         <input
           type="search"
-          class="w-full h-10 p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 outline-none"
+          class="w-full h-10 p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 outline-none pr-14"
           placeholder="Search for a player..."
           onChange={(input) => handleSearch(input.target.value)}
         />
+        {imageUrl == "" && (
+          <button
+            class="absolute inset-y-0 right-3 m-1 bg-indigo-400 rounded text-xs ring-1 ring-white cursor-pointer p-2 font-semibold text-white"
+            onClick={handleDownload}
+          >
+            Generate
+          </button>
+        )}
+        {imageUrl != "" && (
+          <a
+            className="absolute inset-y-0 right-3 m-1 bg-indigo-400 rounded text-xs ring-1 ring-white cursor-pointer p-2 font-semibold text-white "
+            download="TeamImage.jpg"
+            href={imageUrl}
+          >
+            Download
+          </a>
+        )}
       </div>
 
       <motion.div
@@ -74,6 +99,7 @@ export default function PlayerDashboard() {
         variants={container}
         initial="hidden"
         animate="visible"
+        id="playersListPdf"
       >
         {!isLoading &&
           filteredData.map((item) => (
@@ -86,7 +112,7 @@ export default function PlayerDashboard() {
               team={item.team_name}
               id={item.id}
               area={item.area}
-              image={item.photo}
+              image={item.player_photo}
               approved={item.approved}
               handleApproved={() => setisLoading(true)}
             />
