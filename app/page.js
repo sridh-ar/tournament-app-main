@@ -39,14 +39,14 @@ export default function Home() {
   return (
     <main className={styles.main}>
       <div
-        className="shadow-lg p-2 rounded-full flex justify-center items-center absolute top-4 left-4 hover:scale-110 transition-all"
+        className="shadow-lg p-2 h-8 rounded-full flex items-center justify-evenly absolute top-4 left-4"
         onClick={() => setcontactOpened(true)}
       >
         <PhoneIcon width={15} height={15} className="mx-2" />
         {contactOpened && (
           <motion.p
-            className="text-sm font-semibold mr-1"
-            initial={{ x: 100, opacity: 0 }}
+            className="text-sm font-semibold mr-2"
+            initial={{ x: 50, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{
               type: "spring",
