@@ -45,21 +45,29 @@ export default function PlayersCard({
             )
               .then((response) => response.json())
               .then((data) => {
-                // approved = true;
                 handleApproved();
               })
               .catch((error) => console.error(error));
           }
         } else {
-          if (
-            confirm(`No Payment Data Found. Do you want to delete this Player?`)
-          ) {
-            fetch(`/api/player?query=delete from player where id ='${id}'`)
+          if (confirm(`No Payment Data Found. Do you still want to approve?`)) {
+            fetch(
+              `/api/player?query=update player set approved = true where id ='${id}'`
+            )
               .then((response) => response.json())
               .then((data) => {
                 handleApproved();
               })
               .catch((error) => console.error(error));
+          } else {
+            if (confirm(`Do you want to Delete this Player?`)) {
+              fetch(`/api/player?query=delete from player where id ='${id}'`)
+                .then((response) => response.json())
+                .then((data) => {
+                  handleApproved();
+                })
+                .catch((error) => console.error(error));
+            }
           }
         }
       })
@@ -104,20 +112,20 @@ export default function PlayersCard({
         </div>
       )}
       <div
-        className="text-sm grid grid-cols-2 col-span-2"
+        className="text-sm grid grid-cols-3 col-span-2 ml-5"
         onClick={() => setIsOpen(true)}
       >
-        <div className="font-semibold w-24 ml-10">
+        <div className="font-semibold col-span-1">
           <p>Name </p>
           <p>Jersey Name </p>
           <p>Contact No </p>
           <p>Player Role </p>
           <p>Team </p>
         </div>
-        <div className="capitalize ">
+        <div className="capitalize col-span-2">
           <p>
             <b> : </b>
-            {name}
+            {name.length > 12 ? name.slice(0, 12) + "..." : name}
           </p>
           <p>
             <b>: </b>

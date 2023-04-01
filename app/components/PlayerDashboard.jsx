@@ -77,7 +77,7 @@ export default function PlayerDashboard() {
         />
         {imageUrl == "" && (
           <button
-            class="absolute inset-y-0 right-3 m-1 bg-indigo-400 rounded text-xs ring-1 ring-white cursor-pointer p-2 font-semibold text-white"
+            class="absolute right-3 bg-indigo-400 rounded text-xs cursor-pointer px-2 py-1 font-semibold text-white top-2"
             onClick={handleDownload}
           >
             Generate
@@ -85,8 +85,8 @@ export default function PlayerDashboard() {
         )}
         {imageUrl != "" && (
           <a
-            className="absolute inset-y-0 right-3 m-1 bg-indigo-400 rounded text-xs ring-1 ring-white cursor-pointer p-2 font-semibold text-white "
-            download="TeamImage.jpg"
+            className="absolute right-3 bg-indigo-400 rounded text-xs cursor-pointer px-2 py-1 font-semibold text-white top-2"
+            download="Players.jpg"
             href={imageUrl}
           >
             Download

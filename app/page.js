@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import styles from "./page.module.css";
-import { ArrowSmallRightIcon } from "@heroicons/react/24/outline";
+import { ArrowSmallRightIcon, PhoneIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
@@ -24,6 +24,7 @@ const itemAnimation = {
 
 export default function Home() {
   const [loggedIn, setLoggedIn] = useState(false);
+  const [contactOpened, setcontactOpened] = useState(false);
 
   async function validateUser() {
     const res = await validateToken();
@@ -37,6 +38,26 @@ export default function Home() {
 
   return (
     <main className={styles.main}>
+      <div
+        className="shadow-lg p-2 rounded-full flex justify-center items-center absolute top-4 left-4 hover:scale-110 transition-all"
+        onClick={() => setcontactOpened(true)}
+      >
+        <PhoneIcon width={15} height={15} className="mx-2" />
+        {contactOpened && (
+          <motion.p
+            className="text-sm font-semibold mr-1"
+            initial={{ x: 100, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{
+              type: "spring",
+              stiffness: 260,
+              damping: 20,
+            }}
+          >
+            8682021651
+          </motion.p>
+        )}
+      </div>
       <motion.div
         className={styles.center}
         initial="hidden"
