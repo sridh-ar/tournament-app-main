@@ -28,8 +28,8 @@ export default function Table({ selectedTeamModal }) {
     event.preventDefault();
     let values = [];
     let imageResult = "";
-    for (let i = 0; i < 10; i++) {
-      if (i == 7 || i == 8 || i == 9) {
+    for (let i = 0; i < 9; i++) {
+      if (i == 7 || i == 8) {
         imageResult = event.target[i].files[0];
         const storage = getStorage(firebaseApp);
         const imageRef = ref(
@@ -117,7 +117,9 @@ export default function Table({ selectedTeamModal }) {
                   <button
                     href=""
                     className="capitalize text-start col-span-2"
-                    onClick={() => selectedTeamModal([item.id, item.team_name])}
+                    onClick={() =>
+                      selectedTeamModal([item.id, item.team_name, item.owner])
+                    }
                   >
                     {item.team_name.length > 15
                       ? `${item.team_name.slice(0, 15)}...`

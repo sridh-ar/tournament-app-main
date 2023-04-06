@@ -57,12 +57,12 @@ const inputNames = [
     type: "file",
     required: true,
   },
-  {
-    id: 10,
-    title: "Captain Photo",
-    type: "file",
-    required: true,
-  },
+  // {
+  //   id: 10,
+  //   title: "Captain Photo",
+  //   type: "file",
+  //   required: true,
+  // },
 ];
 
 export default function NewTeam({ closeFunction, submitFunction }) {

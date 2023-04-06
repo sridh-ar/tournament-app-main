@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import PlayersCard from "../components/PlayersCard";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
-import html2canvas from "html2canvas";
+import html2pdf from "html-to-pdf-js";
 
 const container = {
   hidden: { opacity: 1, scale: 0 },
@@ -21,7 +21,7 @@ export default function PlayerDashboard() {
   const [teamData, setTeamData] = useState([]);
   const [filteredData, setfilteredData] = useState([]);
   const [isLoading, setisLoading] = useState(true);
-  const [imageUrl, setImageUrl] = useState("");
+  const [isGenerating, setisGenerating] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -43,15 +43,22 @@ export default function PlayerDashboard() {
     }
   }
   async function handleDownload() {
-    const element = document.getElementById("playersListPdf");
-    html2canvas(element).then((canvas) => {
-      const url = canvas.toDataURL();
-      setImageUrl(url);
+    var opt = {
+      margin: 0.1,
+      filename: "Players.pdf",
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
+      pagebreak: { mode: ["avoid-all", "css", "legacy"] },
+    };
+    setisGenerating(true);
+    var element = document.getElementById("playersListPdf");
+    html2pdf(element, opt).then((res) => {
+      setisGenerating(false);
     });
   }
   return (
     <div className="m-5 overflow-y-auto p-1 w-full flex flex-col items-center ">
-      <div class="w-1/3 h-10 fixed z-10">
+      <div class="w-1/3 h-10 fixed z-20">
         <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
           <svg
             aria-hidden="true"
@@ -75,27 +82,16 @@ export default function PlayerDashboard() {
           placeholder="Search for a player..."
           onChange={(input) => handleSearch(input.target.value)}
         />
-        {imageUrl == "" && (
-          <button
-            class="absolute right-3 bg-indigo-400 rounded text-xs cursor-pointer px-2 py-1 font-semibold text-white top-2"
-            onClick={handleDownload}
-          >
-            Generate
-          </button>
-        )}
-        {imageUrl != "" && (
-          <a
-            className="absolute right-3 bg-indigo-400 rounded text-xs cursor-pointer px-2 py-1 font-semibold text-white top-2"
-            download="Players.jpg"
-            href={imageUrl}
-          >
-            Download
-          </a>
-        )}
+        <button
+          class="absolute right-3 bg-indigo-400 rounded  flex justify-center items-center text-xs cursor-pointer px-2 py-1 font-semibold text-white top-2"
+          onClick={handleDownload}
+        >
+          Download
+        </button>
       </div>
 
       <motion.div
-        className="grid grid-cols-2 w-full mt-10"
+        className={isGenerating ? "" : "grid grid-cols-2 w-full mt-10"}
         variants={container}
         initial="hidden"
         animate="visible"
@@ -118,8 +114,8 @@ export default function PlayerDashboard() {
             />
           ))}
       </motion.div>
-      {isLoading && (
-        <div class="flex items-center justify-center w-full h-full bg-gray-100 ">
+      {(isLoading || isGenerating) && (
+        <div class="flex items-center justify-center w-full h-[95%] bg-gray-100 absolute z-10">
           <svg
             aria-hidden="true"
             class="w-16 h-16 mr-2 text-gray-200 animate-spin fill-indigo-400"

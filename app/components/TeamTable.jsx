@@ -25,7 +25,7 @@ export default function TeamTable({ team_detail }) {
 
   function handleImageDownload() {
     setisGenerating(true);
-    const query = `select owner_photo as ownerphoto,captain_photo as captainphoto,owner,captain from team where id = ${team_detail[0]}`;
+    const query = `select owner_photo as ownerphoto,owner from team where id = ${team_detail[0]}`;
     const query1 = `select name,player_photo as photo from player pl join team_players tp on tp.player_no = pl.id where tp.team_id = ${team_detail[0]}`;
     fetch(`/api/team?query=${query}`)
       .then((response) => response.json())
@@ -55,8 +55,11 @@ export default function TeamTable({ team_detail }) {
 
       <div className="bg-white rounded shadow m-5 overflow-y-auto p-1 w-full">
         <div className="bg-slate-100 rounded p-2 mb-0.5 flex justify-between items-center ">
-          <p className="bg-slate-100 rounded text-xl font-bold italic left-5 relative w-[80%] ">
+          <p className="bg-slate-100 rounded text-xl font-bold italic left-5 relative w-[40%] ">
             Team Name: <span className="text-gray-500">{team_detail[1]}</span>
+          </p>
+          <p className="bg-slate-100 rounded text-xl font-bold italic left-5 relative w-[40%] ">
+            Owner Name: <span className="text-gray-500">{team_detail[2]}</span>
           </p>
           {imageUrl == "" && (
             <button

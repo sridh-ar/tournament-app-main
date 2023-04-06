@@ -15,8 +15,8 @@ export async function GET(request) {
 //Register player
 export async function POST(request) {
   const req = await request.json();
-  let insertQuery = `INSERT INTO team (team_name, captain, owner, slots, remaining_slots, total_points_available, remaining_points_available,team_photo,owner_photo,captain_photo)
-      VALUES ('${req[0]}','${req[1]}','${req[2]}','${req[3]}','${req[4]}','${req[5]}','${req[6]}','${req[7]}','${req[8]}','${req[9]}')`;
+  let insertQuery = `INSERT INTO team (team_name, captain, owner, slots, remaining_slots, total_points_available, remaining_points_available,team_photo,owner_photo)
+      VALUES ('${req[0]}','${req[1]}','${req[2]}','${req[3]}','${req[4]}','${req[5]}','${req[6]}','${req[7]}','${req[8]}')`;
   let result;
   try {
     result = await query(insertQuery);

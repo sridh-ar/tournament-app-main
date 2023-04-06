@@ -37,7 +37,7 @@ export default function TeamImage({
           </p>
         </div>
       )}
-      {ownerData.length > 0 && (
+      {/* {ownerData.length > 0 && (
         <div className="flex flex-col items-center justify-center">
           <Image
             src={ownerData[0].captainphoto}
@@ -50,7 +50,7 @@ export default function TeamImage({
             {ownerData[0].captain}(Captain)
           </p>
         </div>
-      )}
+      )} */}
 
       {teamData.map((item) => (
         <div
