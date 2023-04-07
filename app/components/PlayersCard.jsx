@@ -16,6 +16,8 @@ export default function PlayersCard({
   image,
   approved,
   handleApproved,
+  battingStyle,
+  bowlingStyle,
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -171,6 +173,8 @@ export default function PlayersCard({
           role={role}
           team={team}
           area={area}
+          battingStyle={battingStyle}
+          bowlingStyle={bowlingStyle}
           image={image}
           // isOpen={(target) => handleModel(target)}
           closeModal={() => setIsOpen(false)}

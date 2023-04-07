@@ -7,6 +7,8 @@ export default function PlayersCardFull({
   id,
   role,
   team,
+  battingStyle,
+  bowlingStyle,
   area,
   image,
   isOpen,
@@ -77,6 +79,8 @@ export default function PlayersCardFull({
               <p>Player Name </p>
               <p>Serial No </p>
               <p>Player Role </p>
+              <p>Batting Style </p>
+              <p>Bowling Style </p>
               <p>Team </p>
               <p>Area </p>
             </div>
@@ -92,6 +96,14 @@ export default function PlayersCardFull({
               <p>
                 <b>: </b>
                 {role}
+              </p>
+              <p>
+                <b>: </b>
+                {battingStyle}
+              </p>
+              <p>
+                <b>: </b>
+                {bowlingStyle}
               </p>
               <p>
                 <b>: </b>

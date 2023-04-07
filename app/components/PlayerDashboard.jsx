@@ -118,6 +118,8 @@ export default function PlayerDashboard() {
               image={item.player_photo}
               approved={item.approved}
               handleApproved={() => setisLoading(true)}
+              battingStyle={item.batting_style}
+              bowlingStyle={item.bowling_style}
             />
           ))}
       </motion.div>
