@@ -25,7 +25,7 @@ const inputNames = [
     id: 4,
     title: "Slots",
     type: "disabled",
-    value: 14,
+    value: 15,
   },
   {
     id: 5,
