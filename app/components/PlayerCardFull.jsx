@@ -74,8 +74,8 @@ export default function PlayersCardFull({
             </div>
           )}
 
-          <div className="text-2xl grid grid-cols-2 col-span-2  bg-white opacity-50 rounded-lg p-6 ml-5">
-            <div className="font-semibold w-40 ml-10">
+          <div className="text-3xl grid grid-cols-2 w-[50%] bg-white opacity-70 rounded-lg p-6 ml-5 font-bold">
+            <div className=" ml-10">
               <p>Player Name </p>
               <p>Serial No </p>
               <p>Player Role </p>
@@ -84,7 +84,7 @@ export default function PlayersCardFull({
               <p>Team </p>
               <p>Area </p>
             </div>
-            <div className="capitalize font-semibold ">
+            <div className="capitalize ">
               <p>
                 <b> : </b>
                 {name}
