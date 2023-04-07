@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import PlayersCard from "../components/PlayersCard";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
-import html2pdf from "html-to-pdf-js";
+import html2canvas from "html2canvas";
 
 const container = {
   hidden: { opacity: 1, scale: 0 },
@@ -22,6 +22,7 @@ export default function PlayerDashboard() {
   const [filteredData, setfilteredData] = useState([]);
   const [isLoading, setisLoading] = useState(true);
   const [isGenerating, setisGenerating] = useState(false);
+  const [imageUrl, setImageUrl] = useState("");
   const router = useRouter();
 
   useEffect(() => {
@@ -43,16 +44,11 @@ export default function PlayerDashboard() {
     }
   }
   async function handleDownload() {
-    var opt = {
-      margin: 0.1,
-      filename: "Players.pdf",
-      html2canvas: { scale: 2 },
-      jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
-      pagebreak: { mode: ["avoid-all", "css", "legacy"] },
-    };
     setisGenerating(true);
-    var element = document.getElementById("playersListPdf");
-    html2pdf(element, opt).then((res) => {
+    const element = document.getElementById("playersListPdf");
+    html2canvas(element, { scale: 2 }).then((canvas) => {
+      const url = canvas.toDataURL();
+      setImageUrl(url);
       setisGenerating(false);
     });
   }
@@ -82,12 +78,23 @@ export default function PlayerDashboard() {
           placeholder="Search for a player..."
           onChange={(input) => handleSearch(input.target.value)}
         />
-        <button
-          class="absolute right-3 bg-indigo-400 rounded  flex justify-center items-center text-xs cursor-pointer px-2 py-1 font-semibold text-white top-2"
-          onClick={handleDownload}
-        >
-          Download
-        </button>
+        {imageUrl == "" && (
+          <button
+            class="absolute right-3 bg-indigo-400 rounded text-xs cursor-pointer px-2 py-1 font-semibold text-white top-2"
+            onClick={handleDownload}
+          >
+            Generate
+          </button>
+        )}
+        {imageUrl != "" && (
+          <a
+            className="absolute right-3 bg-indigo-400 rounded text-xs cursor-pointer px-2 py-1 font-semibold text-white top-2"
+            download="Players.jpg"
+            href={imageUrl}
+          >
+            Download
+          </a>
+        )}
       </div>
 
       <motion.div
