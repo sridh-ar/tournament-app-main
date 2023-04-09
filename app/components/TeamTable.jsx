@@ -13,7 +13,7 @@ export default function TeamTable({ team_detail }) {
   const [imageUrl, setImageUrl] = useState("");
 
   useEffect(() => {
-    const query = `select * from player pl join team_players tp on tp.player_no = pl.id where tp.team_id = ${team_detail[0]}`;
+    const query = `select pl.* from player pl join team_players tp on tp.player_no = pl.id where tp.team_id = ${team_detail[0]}`;
     fetch(`/api/player?query=${query}`)
       .then((response) => response.json())
       .then((data) => {
