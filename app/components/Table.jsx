@@ -15,7 +15,7 @@ export default function Table({ selectedTeamModal }) {
   const [isLoading, setisLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/team?query=select * from team")
+    fetch("/api/team?query=select * from temp_team")
       .then((response) => response.json())
       .then((data) => {
         setTeamData(data);

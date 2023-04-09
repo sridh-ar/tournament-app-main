@@ -83,10 +83,7 @@ export default function Home() {
         transition={{ ease: "easeIn", duration: 0.01 }}
         variants={itemAnimation}
       >
-        <a
-          className="font-medium mr-3 cursor-pointer sm:w-full "
-          href="/playerRegister"
-        >
+        <a className="font-medium mr-3 cursor-pointer sm:w-full " href="/">
           {/* {window.innerWidth < 500
             ? "Register for FBPL"
             : "Click here to Register for the FBPL"} */}
