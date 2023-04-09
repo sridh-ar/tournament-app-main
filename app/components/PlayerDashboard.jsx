@@ -26,7 +26,7 @@ export default function PlayerDashboard() {
   const router = useRouter();
 
   useEffect(() => {
-    fetch("/api/player?query=select * from temp_players")
+    fetch("/api/player?query=select * from player")
       .then((response) => response.json())
       .then((data) => {
         setTeamData(data);
