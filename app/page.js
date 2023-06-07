@@ -83,7 +83,10 @@ export default function Home() {
         transition={{ ease: "easeIn", duration: 0.01 }}
         variants={itemAnimation}
       >
-        <a className="font-medium mr-3 cursor-pointer sm:w-full " href="/">
+        <a
+          className="font-medium mr-3 cursor-pointer sm:w-full "
+          href="/playerRegister"
+        >
           Register for KPL
         </a>
         <ArrowSmallRightIcon height={30} width={30} />

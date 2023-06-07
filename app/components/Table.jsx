@@ -34,7 +34,7 @@ export default function Table({ selectedTeamModal }) {
         const storage = getStorage(firebaseApp);
         const imageRef = ref(
           storage,
-          `fbpl/team/Player_${Math.floor(Math.random() * 90000) + 10000}`
+          `kpl/team/Player_${Math.floor(Math.random() * 90000) + 10000}`
         );
         await uploadBytes(imageRef, imageResult).then(async (res) => {
           await getDownloadURL(res.ref).then((res) => {
