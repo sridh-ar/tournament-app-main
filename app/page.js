@@ -84,10 +84,7 @@ export default function Home() {
         variants={itemAnimation}
       >
         <a className="font-medium mr-3 cursor-pointer sm:w-full " href="/">
-          {/* {window.innerWidth < 500
-            ? "Register for FBPL"
-            : "Click here to Register for the FBPL"} */}
-          Register for FBPL
+          Register for KPL
         </a>
         <ArrowSmallRightIcon height={30} width={30} />
       </motion.div>
