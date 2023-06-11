@@ -85,7 +85,7 @@ export default function Home() {
       >
         <a
           className="font-medium mr-3 cursor-pointer sm:w-full "
-          href="/playerRegister"
+          href="/"
         >
           Register for KPL
         </a>
