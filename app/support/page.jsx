@@ -1,3 +1,5 @@
+import Footer from "../components/Footer";
+
 const email = process.env.EMAIL || 'sairamanath@gmail.com'
 const address = process.env.EMAIL || 'Chennai, TamilNadu'
 const phone = process.env.EMAIL || '8682021651'
@@ -55,6 +57,7 @@ export default function page() {
 
         </div>
       </div>
+      <Footer />
     </section>
   );
 };

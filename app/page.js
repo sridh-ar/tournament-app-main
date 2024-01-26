@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { validateToken } from "@/lib/auth/auth";
+import Footer from "./components/Footer";
 
 const ApplicationName = process.env.APPLICATIONNAME || 'Demo'
 
@@ -39,18 +40,14 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="flex items-center flex-col h-screen">
-      <a
+    <main className="flex items-center flex-col h-full w-full">
+      {/* <a
         className="shadow-lg px-2 h-8 rounded-full flex items-center justify-between absolute top-4 right-4"
         href="/support"
       >
         <PhoneIcon width={15} height={15} className="ml-1"  />
         <p className="text-sm font-semibold mx-2 ">Contact</p>
-        {/* <div className="w-0.5 h-4 bg-gray-400"  />
-        <p className="text-sm font-semibold mx-2">Terms & Conditions</p>
-        <div className="w-0.5 h-4 bg-gray-400"  />
-        <p className="text-sm font-semibold mx-2">Privacy Policy</p> */}
-      </a>
+      </a> */}
       <motion.div
         className={styles.center}
         initial="hidden"
@@ -76,11 +73,12 @@ export default function Home() {
         transition={{ ease: "easeIn", duration: 0.01 }}
         variants={itemAnimation}
       >
-        <a className="font-medium mr-3 cursor-pointer sm:w-full " href="/">
+        <a className="font-medium mr-3 cursor-pointer sm:w-full" href="/playerRegister">
           Register for {ApplicationName}
         </a>
         <ArrowSmallRightIcon height={30} width={30} />
       </motion.div>
+      <Footer />
     </main>
   );
 }

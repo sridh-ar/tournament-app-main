@@ -1,3 +1,5 @@
+import Footer from "../components/Footer";
+
 const email = process.env.EMAIL || "sairamanath@gmail.com";
 const cancel_date = process.env.CANCEL_DATE || "5";
 const refund_date = process.env.REFUND_DATE || "2";
@@ -6,7 +8,7 @@ export default function page() {
   return (
     <main className="bg-white">
       {/* <!-- Heading --> */}
-      <div class="md:max-w-screen-sm text-center px-4 sm:px-6 lg:px-8 pt-24 pb-6 mx-auto">
+      <div class="md:max-w-screen-sm text-center px-4 sm:px-6 lg:px-8 pt-10 pb-6 mx-auto">
         <h1 class="text-2xl font-bold md:text-4xl dark:text-white">
           Cancellation & Refund Policy
         </h1>
@@ -72,6 +74,7 @@ export default function page() {
         </div>
       </div>
       {/* <!-- End Content --> */}
+      <Footer />
     </main>
   );
 }

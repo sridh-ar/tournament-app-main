@@ -1,9 +1,11 @@
+import Footer from "../components/Footer";
+
 const email = process.env.EMAIL || 'sairamanath@gmail.com'
 
 export default function page() {
   return (
     <main className="bg-white">
-      <div class="md:max-w-screen-sm text-center px-4 sm:px-6 lg:px-8 pt-24 pb-6 mx-auto">
+      <div class="md:max-w-screen-sm text-center px-4 sm:px-6 lg:px-8 pt-10 pb-6 mx-auto">
         <h1 class="text-2xl font-bold md:text-4xl dark:text-white">
           Terms &amp; Conditions
         </h1>
@@ -88,6 +90,7 @@ export default function page() {
           </div>
         </div>
       </div>
+      <Footer />
     </main>
   );
 }
