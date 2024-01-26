@@ -7,6 +7,8 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { validateToken } from "@/lib/auth/auth";
 
+const ApplicationName = process.env.APPLICATIONNAME || 'Demo'
+
 const container = {
   hidden: { opacity: 1, scale: 0, y: 300 },
   visible: {
@@ -37,27 +39,18 @@ export default function Home() {
   }, []);
 
   return (
-    <main className={styles.main}>
-      <div
-        className="shadow-lg p-2 h-8 rounded-full flex items-center justify-evenly absolute top-4 left-4"
-        onClick={() => setcontactOpened(true)}
+    <main className="flex items-center flex-col h-screen">
+      <a
+        className="shadow-lg px-2 h-8 rounded-full flex items-center justify-between absolute top-4 right-4"
+        href="/support"
       >
-        <PhoneIcon width={15} height={15} className="mx-2" />
-        {contactOpened && (
-          <motion.p
-            className="text-sm font-semibold mr-2"
-            initial={{ x: 50, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{
-              type: "spring",
-              stiffness: 260,
-              damping: 20,
-            }}
-          >
-            8682021651
-          </motion.p>
-        )}
-      </div>
+        <PhoneIcon width={15} height={15} className="ml-1"  />
+        <p className="text-sm font-semibold mx-2 ">Contact</p>
+        {/* <div className="w-0.5 h-4 bg-gray-400"  />
+        <p className="text-sm font-semibold mx-2">Terms & Conditions</p>
+        <div className="w-0.5 h-4 bg-gray-400"  />
+        <p className="text-sm font-semibold mx-2">Privacy Policy</p> */}
+      </a>
       <motion.div
         className={styles.center}
         initial="hidden"
@@ -83,11 +76,8 @@ export default function Home() {
         transition={{ ease: "easeIn", duration: 0.01 }}
         variants={itemAnimation}
       >
-        <a
-          className="font-medium mr-3 cursor-pointer sm:w-full "
-          href="/"
-        >
-          Register for KPL
+        <a className="font-medium mr-3 cursor-pointer sm:w-full " href="/">
+          Register for {ApplicationName}
         </a>
         <ArrowSmallRightIcon height={30} width={30} />
       </motion.div>
