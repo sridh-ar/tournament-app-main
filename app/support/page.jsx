@@ -1,8 +1,8 @@
 import Footer from "../components/Footer";
 
-const email = process.env.EMAIL || 'sairamanath@gmail.com'
-const address = process.env.EMAIL || 'Chennai, TamilNadu'
-const phone = process.env.EMAIL || '8682021651'
+const email = process.env.EMAIL || 'sairam.sr556@gmail.com'
+const address = process.env.ADDRESS || 'No 12/27,MGR Nagar, 2nd Cross Street, Velachery ,Chennai -600042'
+const phone = process.env.PHONE || '8682021651'
 
 export default function page() {
   return (
