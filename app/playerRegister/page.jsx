@@ -308,7 +308,7 @@ export default function Page() {
   //     />
   //   );
   // } else 
-  if (!isPaid) {
+  if (isPaid) {
     return (
       <motion.div
         className="flex flex-col justify-center items-center h-screen bg-white "
