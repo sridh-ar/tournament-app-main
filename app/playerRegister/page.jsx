@@ -6,6 +6,7 @@ import { useState } from "react";
 import PaymentPage from "../components/PaymentPage";
 import { uploadBytes, ref, getStorage, getDownloadURL } from "firebase/storage";
 import { firebaseApp } from "@/lib/firebase";
+import makePayment from "@/lib/payment/razor_paymentGateway";
 
 const inputNames = [
   {
@@ -265,47 +266,49 @@ export default function Page() {
     console.log("Values for the player - ", values);
     // settempData(values);
     //Payment calling
-    // if (imageResult) {
-    //   const result = await makePayment(values[0], "", values[3], 111);
-    //   if (result) {
-    //     //insert into table
-    fetch("/api/player", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(values),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setId(data.insertId);
-        setisLoading(false);
+    if (imageResult) {
+      const result = await makePayment(values[0], "", values[3], 111);
+      console.log(result)
+      if (result) {
+        //insert into table
+      fetch("/api/player", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
       })
-      .catch((error) => console.error(error));
+        .then((response) => response.json())
+        .then((data) => {
+          setId(data.insertId);
+          setisLoading(false);
+        })
+        .catch((error) => console.error(error));
 
-    //     setisPaid(true);
-    //     setTimeout(() => {
-    //       router.push("/");
-    //     }, 5000);
-    //   } else {
-    //     alert("Something went wrong, please contact Admin");
-    //   }
-    // }
+        setisPaid(true);
+        setTimeout(() => {
+          router.push("/");
+        }, 5000);
+      } else {
+        alert("Something went wrong, please contact Admin");
+      }
+    }
   }
 
-  if (id && !isPaid) {
-    return (
-      <PaymentPage
-        submit={() => {
-          setisPaid(true);
-          setTimeout(() => {
-            router.push("./");
-          }, 10000);
-        }}
-        id={id}
-      />
-    );
-  } else if (isPaid) {
+  // if (id && !isPaid) {
+  //   return (
+  //     <PaymentPage
+  //       submit={() => {
+  //         setisPaid(true);
+  //         setTimeout(() => {
+  //           router.push("./");
+  //         }, 10000);
+  //       }}
+  //       id={id}
+  //     />
+  //   );
+  // } else 
+  if (!isPaid) {
     return (
       <motion.div
         className="flex flex-col justify-center items-center h-screen bg-white "
@@ -315,15 +318,16 @@ export default function Page() {
       >
         <CheckCircleIcon width={100} height={100} color="green" />
         <p className="font-bold mt-4 text-xl text-center">
-          Thanks for Registering! <br />{" "}
+          Thanks for Registering! 
+          {/* <br />{" "}
           {
             "Once your payment is verified by Admin Team, then you will be Elligble for the Tournament"
-          }
+          } */}
         </p>
-        <p className="font-bold mt-4">
+        {/* <p className="font-bold mt-4">
           Admin Support:{" "}
           <span className="font-semibold text-gray-500">8682021651</span>{" "}
-        </p>
+        </p> */}
       </motion.div>
     );
   } else if (isLoading) {
