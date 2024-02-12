@@ -12,6 +12,7 @@ export async function POST(request) {
   const buffer = Buffer.from(bytes);
 
   console.log("Current directory:",path.join("public", "uploads", file.name));
+  console.log("Path:",path.join(__dirname,"public", "uploads", file.name));
   // const path1 = path.join("public", "uploads", file.name);
   const filePath = path.join("public", file.name);
   await writeFile(filePath, buffer)
