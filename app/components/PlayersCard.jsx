@@ -82,7 +82,7 @@ export default function PlayersCard({
     >
       <Image
         priority
-        src={image}
+        src={`/uploads/${image}`}
         alt="Rounded avatar"
         width={200}
         height={200}

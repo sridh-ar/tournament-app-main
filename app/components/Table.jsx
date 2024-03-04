@@ -31,16 +31,42 @@ export default function Table({ selectedTeamModal }) {
     for (let i = 0; i < 9; i++) {
       if (i == 7 || i == 8) {
         imageResult = event.target[i].files[0];
-        const storage = getStorage(firebaseApp);
-        const imageRef = ref(
-          storage,
-          `kpl/team/Player_${Math.floor(Math.random() * 90000) + 10000}`
-        );
-        await uploadBytes(imageRef, imageResult).then(async (res) => {
-          await getDownloadURL(res.ref).then((res) => {
-            values.push(res);
+        // const storage = getStorage(firebaseApp);
+        // const imageRef = ref(
+        //   storage,
+        //   `kpl/team/Player_${Math.floor(Math.random() * 90000) + 10000}`
+        // );
+        // await uploadBytes(imageRef, imageResult).then(async (res) => {
+        //   await getDownloadURL(res.ref).then((res) => {
+        //     values.push(res);
+        //   });
+        // });
+
+        //Storing it on local:
+        const formData = new FormData();
+        formData.append('file', imageResult);
+        formData.append('path', 'uploads');
+
+        try {
+          const response = await fetch("/api/upload", {
+            method: "POST",
+            body: formData,
           });
-        });
+  
+          // Handle the response
+          if (response.ok) {
+            console.log('File uploaded successfully');
+            values.push(imageResult.name);
+          } else {
+            console.error('File upload failed');
+            alert('Please Contact Admin')
+            window.location.replace('/')
+          }
+        } catch (error) {
+          console.error('Error during file upload:', error);
+          alert('Please Contact Admin')
+          window.location.replace('/')
+        }
       } else {
         values.push(event.target[i].value);
       }
@@ -108,7 +134,7 @@ export default function Table({ selectedTeamModal }) {
               <td>
                 <div className="grid grid-cols-3 items-center justify-items-center gap-0">
                   <img
-                    src={item.team_photo}
+                    src={`/uploads/${item.team_photo}`}
                     alt="Rounded avatar"
                     width={30}
                     height={30}

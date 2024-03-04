@@ -11,9 +11,12 @@ export async function POST(request) {
   const bytes = await file.arrayBuffer();
   const buffer = Buffer.from(bytes);
 
-  console.log("Current directory:",path.join("public", "uploads", file.name));
-  // const path1 = path.join("public", "uploads", file.name);
-  const filePath = path.join("public", file.name);
+  let filePath = path.join("public", file.name);
+  if(data.get("path")){
+    filePath = path.join("public", data.get("path"), file.name);
+  }
+  console.log("Current directory:",filePath);
+
   await writeFile(filePath, buffer)
 
   return new Response(JSON.stringify('File Upload Success'));

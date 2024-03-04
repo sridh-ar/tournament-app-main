@@ -248,16 +248,42 @@ export default function Page() {
       if (i == 9) {
         //Storing it in Firebase
         imageResult = event.target[i].files[0];
-        const storage = getStorage(firebaseApp);
-        const imageRef = ref(
-          storage,
-          `kpl/Player_${Math.floor(Math.random() * 90000) + 10000}`
-        );
-        await uploadBytes(imageRef, imageResult).then(async (res) => {
-          await getDownloadURL(res.ref).then((res) => {
-            values.push(res);
+        // const storage = getStorage(firebaseApp);
+        // const imageRef = ref(
+        //   storage,
+        //   `kpl/Player_${Math.floor(Math.random() * 90000) + 10000}`
+        // );
+        // await uploadBytes(imageRef, imageResult).then(async (res) => {
+        //   await getDownloadURL(res.ref).then((res) => {
+        //     values.push(res);
+        //   });
+        // });
+
+        //Storing it on local:
+        const formData = new FormData();
+        formData.append('file', imageResult);
+        formData.append('path', 'uploads');
+
+        try {
+          const response = await fetch("/api/upload", {
+            method: "POST",
+            body: formData,
           });
-        });
+  
+          // Handle the response
+          if (response.ok) {
+            console.log('File uploaded successfully');
+            values.push(imageResult.name);
+          } else {
+            console.error('File upload failed');
+            alert('Please Contact Admin')
+            window.location.replace('/')
+          }
+        } catch (error) {
+          console.error('Error during file upload:', error);
+          alert('Please Contact Admin')
+          window.location.replace('/')
+        }
       } else {
         values.push(event.target[i].value);
       }
@@ -267,9 +293,12 @@ export default function Page() {
     // settempData(values);
     //Payment calling
     if (imageResult) {
-      const result = await makePayment(values[0], "", values[3], 111);
+      const result = await makePayment(values[0], "", values[3], 1);
       console.log(result)
       if (result) {
+        //making payment status approved
+        values[values.length -1] = true
+        
         //insert into table
       fetch("/api/player", {
         method: "POST",

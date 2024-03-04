@@ -42,7 +42,7 @@ export default function PlayersCardFull({
         <form className="relative w-screen h-screen rounded-md flex items-center p-10 z-100">
           <Image
             priority
-            src={image}
+            src={`/uploads/${image}`}
             alt="Rounded avatar"
             width={1000}
             height={1000}

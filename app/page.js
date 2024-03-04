@@ -27,7 +27,9 @@ const itemAnimation = {
 
 export default function Home() {
   const [loggedIn, setLoggedIn] = useState(false);
+  const [remainingSlots, setremainingSlots] = useState(0);
   const [contactOpened, setcontactOpened] = useState(false);
+  const totalSlots = 150
 
   async function validateUser() {
     const res = await validateToken();
@@ -35,8 +37,20 @@ export default function Home() {
     else setLoggedIn(false);
   }
 
+  async function getRemainingSlots(){
+    const query = `select count(*) as count from player`;
+    fetch(`/api/player?query=${query}`)
+      .then((response) => response.json())
+      .then((data) => {
+        setremainingSlots(totalSlots - data[0].count);
+        setisLoading(false);
+      })
+      .catch((error) => console.error(error));
+  }
+
   useEffect(() => {
     validateUser();
+    getRemainingSlots();
   }, []);
 
   return (
@@ -73,11 +87,14 @@ export default function Home() {
         transition={{ ease: "easeIn", duration: 0.01 }}
         variants={itemAnimation}
       >
-        <a className="font-medium mr-3 cursor-pointer sm:w-full" href="/playerRegister">
+        <a className="font-medium mr-3 cursor-pointer sm:w-full" href={remainingSlots <= 0 ? '/' : `/playerRegister`}>
           Register for {ApplicationName}
         </a>
         <ArrowSmallRightIcon height={30} width={30} />
       </motion.div>
+        <span className="text-xs text-orange-600 mt-3">
+        Remaininig Slots - {remainingSlots}
+        </span>
       <Footer />
     </main>
   );
