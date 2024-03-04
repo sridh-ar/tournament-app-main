@@ -1,4 +1,4 @@
-const ApplicationName = process.env.APPLICATIONNAME || 'Demo'
+const ApplicationName = process.env.NEXT_PUBLIC_APPLICATIONNAME || 'Demo'
 
 export default function Footer() {
     return (

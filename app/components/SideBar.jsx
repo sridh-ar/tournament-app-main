@@ -8,6 +8,8 @@ import {
 } from "@heroicons/react/24/solid";
 import { useRouter } from "next/navigation";
 
+const ApplicationName = process.env.NEXT_PUBLIC_DASHBOARD_APPLICATIONNAME || 'Demo'
+
 export default function SideBar({ whichOne, active, playerCount }) {
   const router = useRouter();
   function handleLogout() {
@@ -18,9 +20,9 @@ export default function SideBar({ whichOne, active, playerCount }) {
   }
   return (
     <div className="bg-white w-3/12 p-5 shadow-md z-20">
-      <div className="flex  items-center justify-evenly pt-5 p-1">
+      <div className="flex  items-center justify-center p-1">
         <Image src="/leo.png" alt="Next.js Logo" width={35} height={35} />
-        <p className="font-semibold text-sm">Kalaignar Premier League</p>
+        <p className="font-semibold text-sm">{ApplicationName}</p>
       </div>
       <div className=" h-px m-3 bg-gray-400" />
 
