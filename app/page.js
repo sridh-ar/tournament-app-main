@@ -29,7 +29,7 @@ export default function Home() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [remainingSlots, setremainingSlots] = useState(0);
   const [contactOpened, setcontactOpened] = useState(false);
-  const totalSlots = 150
+  const totalSlots = 180
 
   async function validateUser() {
     const res = await validateToken();
@@ -91,10 +91,15 @@ export default function Home() {
           Register for {ApplicationName}
         </a>
         <ArrowSmallRightIcon height={30} width={30} />
-      </motion.div>
-        <span className="text-xs text-orange-600 mt-3">
-        Remaininig Slots - {remainingSlots}
-        </span>
+      </motion.div >
+        <motion.span className="text-xs text-orange-600 mt-3"
+          initial="hidden"
+          animate="visible"
+          transition={{ ease: "easeIn", duration: 0.5 }}
+          variants={itemAnimation}
+        >
+          Remaininig Slots - {remainingSlots}
+        </motion.span>
       <Footer />
     </main>
   );
