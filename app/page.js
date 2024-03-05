@@ -87,7 +87,7 @@ export default function Home() {
         transition={{ ease: "easeIn", duration: 0.01 }}
         variants={itemAnimation}
       >
-        <a className="font-medium mr-3 cursor-pointer sm:w-full" href={remainingSlots <= 0 ? '/' : `/playerRegister`}>
+        <a className="font-medium mr-3 cursor-pointer sm:w-full" href={remainingSlots <= 0 ? '#' : `/playerRegister`}>
           Register for {ApplicationName}
         </a>
         <ArrowSmallRightIcon height={30} width={30} />
