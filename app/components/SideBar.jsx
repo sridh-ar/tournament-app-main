@@ -8,7 +8,7 @@ import {
 } from "@heroicons/react/24/solid";
 import { useRouter } from "next/navigation";
 
-const ApplicationName = process.env.NEXT_PUBLIC_DASHBOARD_APPLICATIONNAME || 'Demo'
+const ApplicationName = process.env.NEXT_PUBLIC_DASHBOARD_APPLICATIONNAME || 'Fire Boys Premier League'
 
 export default function SideBar({ whichOne, active, playerCount }) {
   const router = useRouter();
