@@ -26,7 +26,7 @@ export default function TeamImage({
       {ownerData.length > 0 && (
         <div className="flex flex-col items-center justify-center">
           <Image
-            src={`/uploads/${ownerData[0].ownerphoto}`}
+            src={ownerData[0].ownerphoto}
             alt="Rounded avatar"
             width={1000}
             height={1000}
@@ -58,7 +58,7 @@ export default function TeamImage({
           className="flex flex-col items-center justify-center"
         >
           <Image
-            src={`/uploads/${item.photo}`}
+            src={item.photo}
             alt="Rounded avatar"
             width={1000}
             height={1000}

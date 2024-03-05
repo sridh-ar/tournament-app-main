@@ -29,7 +29,7 @@ export default function Home() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [remainingSlots, setremainingSlots] = useState(0);
   const [contactOpened, setcontactOpened] = useState(false);
-  const totalSlots = 180
+  const totalSlots = 160
 
   async function validateUser() {
     const res = await validateToken();

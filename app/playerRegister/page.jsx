@@ -248,42 +248,51 @@ export default function Page() {
       if (i == 9) {
         //Storing it in Firebase
         imageResult = event.target[i].files[0];
-        // const storage = getStorage(firebaseApp);
-        // const imageRef = ref(
-        //   storage,
-        //   `kpl/Player_${Math.floor(Math.random() * 90000) + 10000}`
-        // );
-        // await uploadBytes(imageRef, imageResult).then(async (res) => {
-        //   await getDownloadURL(res.ref).then((res) => {
-        //     values.push(res);
-        //   });
-        // });
+        const storage = getStorage(firebaseApp);
+        const imageRef = ref(
+          storage,
+          `kpl/Player_${Math.floor(Math.random() * 90000) + 10000}`
+        );
+        await uploadBytes(imageRef, imageResult).then(async (res) => {
+          await getDownloadURL(res.ref).then((res) => {
+            values.push(res);
+          });
+        });
 
         //Storing it on local:
-        const formData = new FormData();
-        formData.append('file', imageResult);
-        formData.append('path', 'uploads');
+        // const formData = new FormData();
+        // formData.append('image', imageResult);
+        // // formData.append('path', 'uploads');
 
-        try {
-          const response = await fetch("/api/upload", {
-            method: "POST",
-            body: formData,
-          });
-  
-          // Handle the response
-          if (response.ok) {
-            console.log('File uploaded successfully');
-            values.push(imageResult.name);
-          } else {
-            console.error('File upload failed');
-            alert('Please Contact Admin')
-            window.location.replace('/')
-          }
-        } catch (error) {
-          console.error('Error during file upload:', error);
-          alert('Please Contact Admin')
-          window.location.replace('/')
-        }
+        // try {
+        //   axios.post('http://195.35.21.236:3001/upload', formData)
+        //   .then(response => {
+        //     alert(response.data)
+        //     console.log('API Response:', response.data);
+        //   })
+        //   .catch(error => {
+        //     alert(error.message)
+        //     console.error('Error:', error.message);
+        //   });
+          // const response = await fetch("http://localhost:3001/upload", {
+          //   method: "POST",
+          //   headers: {
+          //     // Add this line to specify that you are sending a form with multipart/form-data
+          //     "Content-Type": "multipart/form-data",
+          //   },
+          //   body: formData,
+          // });
+
+          // if(!response.ok) throw new Error(await response.text())
+
+          // console.log('File uploaded successfully');
+          // values.push(imageResult.name);
+
+        // } catch (error) {
+        //   console.error('Error during file upload:', error);
+        //   alert(JSON.stringify(error.message))
+        //   window.location.replace('/')
+        // }
       } else {
         values.push(event.target[i].value);
       }
@@ -293,7 +302,7 @@ export default function Page() {
     // settempData(values);
     //Payment calling
     if (imageResult) {
-      const result = await makePayment(values[0], "", values[3], 1);
+      const result = await makePayment(values[0], "", values[3], 111);
       console.log(result)
       if (result) {
         //making payment status approved
@@ -395,6 +404,7 @@ export default function Page() {
                       type={item.type}
                       required={item.required}
                       placeholder={`${item.title}`}
+                      accept="image/png, image/jpeg"
                       className={
                         item.type == "file"
                           ? "w-full outline-0  h-8 text-sm p-1 m-1"
