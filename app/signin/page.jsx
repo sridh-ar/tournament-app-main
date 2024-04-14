@@ -2,7 +2,7 @@
 import { useRouter } from "next/navigation";
 import { EnvelopeIcon } from "@heroicons/react/24/solid";
 
-export default function SignIn({ isSignUp }) {
+export default function SignIn() {
   const router = useRouter();
 
   async function handleSubmit(event) {
