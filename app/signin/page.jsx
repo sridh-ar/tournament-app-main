@@ -39,7 +39,7 @@ export default function SignIn() {
 
         <div className="flex flex-col items-center justify-center ">
           <p className="font-semibold text-lg m-5">
-            {isSignUp ? "Admin SignUp" : "Admin Login"}
+            Admin Login
           </p>
 
           {/* Email */}
