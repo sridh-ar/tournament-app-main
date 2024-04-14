@@ -1,4 +1,4 @@
-import { validateUser } from "@/lib/auth/auth";
+import { validateUser } from "../../../lib/auth/auth";
 import { Result } from "postcss";
 
 //Auth
