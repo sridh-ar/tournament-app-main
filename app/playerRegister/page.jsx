@@ -398,19 +398,28 @@ export default function Page() {
                     {item.required && <span className="text-red-600"> *</span>}
                   </motion.label>
                   {item.type != "select" && (
-                    <motion.input
-                      id={item.id}
-                      variants={itemAnimation}
-                      type={item.type}
-                      required={item.required}
-                      placeholder={`${item.title}`}
-                      accept="image/png, image/jpeg"
-                      className={
-                        item.type == "file"
-                          ? "w-full outline-0  h-8 text-sm p-1 m-1"
-                          : "w-full outline-0 ring-1 rounded ring-slate-400 h-8 text-sm p-4 m-1"
-                      }
-                    />
+                    // <motion.input
+                    //   id={item.id}
+                    //   variants={itemAnimation}
+                    //   type={item.type}
+                    //   required={item.required}
+                    //   placeholder={`${item.title}`}
+                    //   accept="image/png, image/jpeg"
+                    //   className={
+                    //     item.type == "file"
+                    //       ? "w-full outline-0  h-8 text-sm p-1 m-1"
+                    //       : "w-full outline-0 ring-1 rounded ring-slate-400 h-8 text-sm p-4 m-1"
+                    //   }
+                    // />
+                    <div className="bg-gray-200 flex items-center justify-center rounded-full p-2 px-4 m-2 w-full">
+            {/* <EnvelopeIcon height={20} widt  h={20} /> */}
+            <input
+              type="password"
+              required
+              placeholder="Password"
+              className="outline-0 mx-2 bg-gray-200 text-sm w-full"
+            />
+          </div>
                   )}
                   {item.type == "select" && (
                     <motion.select

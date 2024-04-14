@@ -1,4 +1,4 @@
-import { query } from "@/lib/database/service";
+import { query } from "../../../lib/database/service";
 
 //Query player
 export async function GET(request) {

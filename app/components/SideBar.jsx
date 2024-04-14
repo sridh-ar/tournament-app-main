@@ -1,70 +1,91 @@
-"use client";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+
+// Import icons from heroicons/react package
 import {
   HomeModernIcon,
   UserGroupIcon,
   ArrowRightOnRectangleIcon,
-  BugAntIcon
+  BugAntIcon,
+  ChatBubbleOvalLeftEllipsisIcon
 } from "@heroicons/react/24/solid";
-import { useRouter } from "next/navigation";
 
-const ApplicationName = process.env.NEXT_PUBLIC_DASHBOARD_APPLICATIONNAME || 'Fire Boys Premier League'
+// SideBarItem component
+const SideBarItem = ({ isActive, name, setActiveMenu}) => {
+  return (
+    <div
+      className={`ml-10 flex cursor-pointer w-full p-2 my-1 text-sm font-medium rounded-l-full relative pl-4 ${isActive ? 'text-black bg-gray-200' : 'text-white'}`}
+      onClick={() => setActiveMenu(name)}
+    >
+      {isActive && (
+        <>
+          <div className="bg-gray-200 absolute transition-colors duration-300 h-5 w-5 -top-5 z-10 right-0">
+            <div className="bg-[#54AAB3] transition-colors duration-300 h-5 w-5 rounded-br-2xl"></div>
+          </div>
+          <div className="bg-gray-200 absolute transition-colors duration-300 h-5 w-5 -bottom-5 z-10 right-0">
+            <div className="bg-[#54AAB3] transition-colors duration-300 h-5 w-5 rounded-tr-2xl"></div>
+          </div>
+        </>
+      )}
+      {/* Render icon based on name */}
+      {name === "Dashboard" && <HomeModernIcon className="w-4 h-4 mr-2" color={isActive ? "#54AAB3" : ""} />}
+      {name === "Players" && <UserGroupIcon className="w-4 h-4 mr-2" color={isActive ? "#54AAB3" : ""}/>}
+      {name === "Support" && <ChatBubbleOvalLeftEllipsisIcon className="w-4 h-4 mr-2" color={isActive ? "#54AAB3" : ""}/>}
+      {name === "Sign Out" && <ArrowRightOnRectangleIcon className="w-4 h-4 mr-2" color={isActive ? "#54AAB3" : ""}/>}
+      {name}
+    </div>
+  );
+};
 
-export default function SideBar({ whichOne, active, playerCount }) {
+export default function SideBar({ setActiveMenu ,currentActiveMenu }) {
   const router = useRouter();
+
   function handleLogout() {
     if (confirm("Do you want to Logout?")) {
       localStorage.removeItem("aauutthh");
       router.replace("/");
     }
   }
+
   return (
-    <div className="bg-white w-3/12 p-5 shadow-md z-20">
-      <div className="flex  items-center justify-center p-1">
-        <Image src="/leo.png" alt="Next.js Logo" width={35} height={35} />
-        <p className="font-semibold text-sm">{ApplicationName}</p>
-      </div>
-      <div className=" h-px m-3 bg-gray-400" />
-
-      {/* -----------DashBoard Items---------- */}
-      <div
-        className={`flex items-center m-5 cursor-pointer hover:bg-indigo-200 p-2 px-3 rounded ${
-          active == "dashboard" ? "bg-indigo-200 bg-opacity-30" : ""
-        } `}
-        onClick={() => whichOne("dashboard")}
-      >
-        <HomeModernIcon height={20} width={20} />
-        <p className="text-sm ml-3 font-semibold">Dashboard</p>
-      </div>
-
-      <div
-        className={`flex items-center m-5 cursor-pointer hover:bg-indigo-200 p-2 px-3 rounded ${
-          active == "players" ? "bg-indigo-200 bg-opacity-30" : ""
-        } `}
-        onClick={() => whichOne("players")}
-      >
-        <UserGroupIcon height={20} width={20} />
-        <p className="text-sm ml-3 font-semibold">Players ({playerCount})</p>
-      </div>
-
+    <div className="w-[18%] text-white flex flex-col items-center">
       {/* Logo */}
-      <div
-        className={`flex items-center m-5 cursor-pointer hover:bg-indigo-200 p-2 px-3 rounded ${
-          active == "logoUpload" ? "bg-indigo-200 bg-opacity-30" : ""
-        } `}
-        onClick={() => whichOne("logoUpload")}
-      >
-        <BugAntIcon height={20} width={20} />
-        <p className="text-sm ml-3 font-semibold">Logo Upload</p>
-      </div>
+      {/* <div className="flex items-center justify-center p-1 my-2 bg-white rounded shadow"> */}
+        <Image src="/New_Logo.png" alt="Next.js Logo" width={150} height={150} className=" my-4 ml-5"/>
+        {/* <p className=" text-sm ml-2">FBLP League</p> */}
+      {/* </div> */}
 
-      <div
-        className="flex items-center m-5 cursor-pointer hover:bg-indigo-200 p-2 px-3 rounded"
-        onClick={handleLogout}
-      >
-        <ArrowRightOnRectangleIcon height={20} width={20} />
-        <p className="text-sm ml-3 font-semibold">Logout</p>
-      </div>
+      {/* DIvider */}
+      <div className="w-[80%] h-[0.5px] bg-gray-200 mb-5"></div>
+
+      {/* Menus */}
+      <SideBarItem
+        isActive={currentActiveMenu === "Dashboard"}
+        name="Dashboard"
+        setActiveMenu={(name) => setActiveMenu(name)}
+      />
+      <SideBarItem
+        isActive={currentActiveMenu === "Players"}
+        name="Players"
+        setActiveMenu={(name) => setActiveMenu(name)}
+      />
+
+       {/* DIvider */}
+       <div className="w-[80%] h-[0.5px] bg-gray-200 my-5"></div>
+
+       <SideBarItem
+        isActive={currentActiveMenu === "Support"}
+        name="Support"
+        setActiveMenu={() => router.push("/support")}
+      />
+      <SideBarItem
+        isActive={currentActiveMenu === "Sign Out"}
+        name="Sign Out"
+        setActiveMenu={handleLogout}
+      />
+
+
     </div>
   );
 }

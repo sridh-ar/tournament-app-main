@@ -5,7 +5,7 @@ import NewTeam from "./NewTeam";
 import NewTeamPlayer from "./NewTeamPlayer";
 import { motion } from "framer-motion";
 import { uploadBytes, ref, getStorage, getDownloadURL } from "firebase/storage";
-import { firebaseApp } from "@/lib/firebase";
+import { firebaseApp } from  "../../lib/firebase/index";
 
 export default function Table({ selectedTeamModal }) {
   const [isOpen, setIsOpen] = useState(false);

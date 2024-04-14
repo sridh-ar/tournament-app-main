@@ -1,5 +1,5 @@
 "use client";
-import { validateToken } from "@/lib/auth/auth";
+import { validateToken } from "../../lib/auth/auth";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import PlayerDashboard from "../components/PlayerDashboard";
@@ -9,7 +9,7 @@ import TeamTable from "../components/TeamTable";
 import FileUpload from "../components/FileUpload";
 
 export default function Page() {
-  const [category, setCategory] = useState("dashboard");
+  const [category, setCategory] = useState("Dashboard");
   const [loggedIn, setLoggedIn] = useState(false);
   const [playerCount, setplayerCount] = useState(0);
   const [selectedTeam, setselectedTeam] = useState([]);
@@ -35,19 +35,19 @@ export default function Page() {
 
   if (loggedIn) {
     return (
-      <div className="flex w-full h-screen bg-gray-100">
+      <div className="flex w-full h-screen bg-[#54AAB3]">
         <SideBar
-          whichOne={(category) => {
+          setActiveMenu={(category) => {
             setCategory(category);
             setselectedTeam([]);
           }}
-          active={category}
+          currentActiveMenu={category}
           playerCount={playerCount}
         />
-        {selectedTeam.length === 0 && category == "dashboard" && (
+        {selectedTeam.length === 0 && category == "Dashboard" && (
           <Table selectedTeamModal={(team) => setselectedTeam(team)} />
         )}
-        {category == "players" && <PlayerDashboard />}
+        {category == "Players" && <PlayerDashboard />}
         {category == "logoUpload" && <FileUpload />}
         {selectedTeam.length > 0 && <TeamTable team_detail={selectedTeam} />}
       </div>

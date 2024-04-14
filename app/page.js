@@ -1,11 +1,11 @@
 "use client";
 import Image from "next/image";
 import styles from "./page.module.css";
-import { ArrowSmallRightIcon, PhoneIcon } from "@heroicons/react/24/outline";
+import { PencilSquareIcon} from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { validateToken } from "@/lib/auth/auth";
+import { validateToken } from "../lib/auth/auth";
 import Footer from "./components/Footer";
 
 const ApplicationName = process.env.NEXT_PUBLIC_APPLICATIONNAME || 'FBPL'
@@ -29,7 +29,7 @@ export default function Home() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [remainingSlots, setremainingSlots] = useState(0);
   const [contactOpened, setcontactOpened] = useState(false);
-  const totalSlots = 160
+  const totalSlots = 190
 
   async function validateUser() {
     const res = await validateToken();
@@ -70,7 +70,8 @@ export default function Home() {
       >
         <Link href={loggedIn ? "/dashboard" : "/signin"}>
           <Image
-            className={styles.logo}
+            // className={styles.logo}
+            className="relative"
             src="/leo.png"
             alt="Next.js Logo"
             width={250}
@@ -80,17 +81,17 @@ export default function Home() {
         </Link>
       </motion.div>
       <motion.div
-        className="flex justify-center items-center hover:scale-110 transition-all  "
+        className="flex justify-center items-center transition-all bg-gray-50 shadow px-4 py-1.5 rounded-full "
         initial="hidden"
         animate="visible"
         whileHover={{ scale: 1.1 }}
         transition={{ ease: "easeIn", duration: 0.01 }}
         variants={itemAnimation}
       >
-        <a className="font-medium mr-3 cursor-pointer sm:w-full" href={remainingSlots <= 0 ? '#' : `/playerRegister`}>
+        <a className="text-sm cursor-pointer mr-1 sm:w-full" href={remainingSlots <= 0 ? '#' : `/playerRegister`}>
           Register for {ApplicationName}
         </a>
-        <ArrowSmallRightIcon height={30} width={30} />
+        <PencilSquareIcon height={20} width={20} />
       </motion.div >
         <motion.span className="text-xs text-orange-600 mt-3"
           initial="hidden"
