@@ -5,8 +5,8 @@ import { CheckCircleIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import PaymentPage from "../components/PaymentPage";
 import { uploadBytes, ref, getStorage, getDownloadURL } from "firebase/storage";
-import { firebaseApp } from "@/lib/firebase";
-import makePayment from "@/lib/payment/razor_paymentGateway";
+import { firebaseApp } from "../../lib/firebase";
+import makePayment from "../../lib/payment/razor_paymentGateway";
 
 const inputNames = [
   {
