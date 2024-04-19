@@ -204,10 +204,10 @@ export default function Page() {
             { label: 'Jersey No', type: 'text', name: 'jerseyno', required: true },
             { label: 'Player Photo', type: 'file', name: 'playerphoto', required: true },
           ].map((input, index) => (
-            <div key={index} className="flex flex-col justify-center w-full gap-1 text-sm">
+            <div key={index} className="flex flex-col justify-center w-full gap-2 text-sm">
               <label>{input.required ? `${input.label}*`: `${input.label}`}</label>
               <input
-                className="outline-none ring-1 ring-indigo-100 my-2 p-2 px-4 rounded-full bg-gray-200 file:rounded-full"
+                className="outline-none ring-1 ring-indigo-100 p-2 h-9 w-full px-4 rounded-full bg-gray-200 file:rounded-full"
                 type={input.type}
                 name={input.name}
                 value={playerData[input.name]}
@@ -232,7 +232,7 @@ export default function Page() {
             `}>
              <label>{select.required ? `${select.label}*`: `${select.label}`}</label>
               <select 
-                className="outline-none p-2 px-4 ring-1 ring-indigo-100 my-2 rounded-full bg-gray-200" 
+                className="outline-none p-2 px-4 ring-1 h-9 w-full ring-indigo-100 my-2 rounded-full bg-gray-200" 
                 required={select.required}
                 name={select.name}
                 value={playerData[select.name]}
