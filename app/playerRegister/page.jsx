@@ -8,227 +8,6 @@ import { uploadBytes, ref, getStorage, getDownloadURL } from "firebase/storage";
 import { firebaseApp } from "../../lib/firebase";
 import makePayment from "../../lib/payment/razor_paymentGateway";
 
-const inputNames = [
-  {
-    id: 1,
-    title: "Player Name",
-    type: "text",
-    required: true,
-  },
-  {
-    id: 2,
-    title: "Date of Birth",
-    type: "date",
-    required: true,
-  },
-  {
-    id: 3,
-    title: "Age",
-    type: "number",
-    required: true,
-  },
-  {
-    id: 4,
-    title: "Contact number",
-    type: "text",
-    required: true,
-  },
-  {
-    id: 5,
-    title: "Team Name",
-    type: "text",
-    required: true,
-  },
-  {
-    id: 6,
-    title: "Name in Jersey",
-    type: "text",
-    required: true,
-  },
-  {
-    id: 7,
-    title: "Jersey Size",
-    type: "select",
-    required: false,
-    options: [
-      {
-        id: 1,
-        value: "",
-      },
-      {
-        id: 2,
-        value: "Small",
-      },
-      {
-        id: 3,
-        value: "Medium",
-      },
-      {
-        id: 4,
-        value: "Large",
-      },
-      {
-        id: 5,
-        value: "Extra Large (XL)",
-      },
-      {
-        id: 6,
-        value: "XXL",
-      },
-      {
-        id: 7,
-        value: "XXXL",
-      },
-    ],
-  },
-  {
-    id: 8,
-    title: "Jersey No",
-    type: "number",
-    required: true,
-  },
-  {
-    id: 9,
-    title: "Area",
-    type: "text",
-    required: true,
-  },
-  {
-    id: 10,
-    title: "Player Photo",
-    type: "file",
-    required: true,
-  },
-  {
-    id: 11,
-    title: "Player Role",
-    type: "select",
-    required: true,
-    options: [
-      {
-        id: 1,
-        value: "",
-      },
-      {
-        id: 2,
-        value: "All Rounder",
-      },
-      {
-        id: 3,
-        value: "Batsman",
-      },
-      {
-        id: 4,
-        value: "Bowler",
-      },
-    ],
-  },
-  {
-    id: 12,
-    title: "Batting Style",
-    type: "select",
-    required: false,
-    options: [
-      {
-        id: 1,
-        value: "",
-      },
-      {
-        id: 2,
-        value: "Right",
-      },
-      {
-        id: 3,
-        value: "Left",
-      },
-    ],
-  },
-  // {
-  //   id: 13,
-  //   title: "Bowler",
-  //   type: "select",
-  //   required: true,
-  //   options: [
-  //     {
-  //       id: 1,
-  //       value: "",
-  //     },
-  //     {
-  //       id: 2,
-  //       value: "Right-Arm",
-  //     },
-  //     {
-  //       id: 3,
-  //       value: "Left-Arm",
-  //     },
-  //   ],
-  // },
-  {
-    id: 14,
-    title: "Bowling Style",
-    type: "select",
-    required: false,
-    options: [
-      {
-        id: 1,
-        value: "",
-      },
-      {
-        id: 2,
-        value: "Fast",
-      },
-      {
-        id: 3,
-        value: "Medium",
-      },
-      {
-        id: 4,
-        value: "Spin",
-      },
-    ],
-  },
-  // {
-  //   id: 15,
-  //   title: "Wicket Keeper",
-  //   type: "select",
-  //   required: true,
-  //   options: [
-  //     {
-  //       id: 1,
-  //       value: "",
-  //     },
-  //     {
-  //       id: 2,
-  //       value: "true",
-  //     },
-  //     {
-  //       id: 3,
-  //       value: "false",
-  //     },
-  //   ],
-  // },
-];
-
-const container = {
-  hidden: { opacity: 1, scale: 0 },
-  visible: {
-    opacity: 1,
-    scale: 1,
-    transition: {
-      delayChildren: 0.1,
-      staggerChildren: 0.05,
-    },
-  },
-};
-
-const itemAnimation = {
-  hidden: { y: 10, opacity: 0 },
-  visible: {
-    y: 0,
-    opacity: 1,
-  },
-};
-
 export default function Page() {
   // const [base64Image, setBase64Image] = useState("");
   const [isPaid, setisPaid] = useState(false);
@@ -237,7 +16,80 @@ export default function Page() {
   const [id, setId] = useState("");
   const router = useRouter();
 
-  async function handleSubmit(event) {
+  const [playerData, setPlayerData] = useState({
+    name: '',
+    dob: '',
+    age: '',
+    contact: '',
+    team: '',
+    area: '',
+    jersey: '',
+    jerseyno: '',
+    jerseysize: '',
+    playerphoto: '',
+    playerrole: 'All Rounder',
+    battingstyle: '',
+    bowlingstyle: '',
+    istermaccepted: false,
+  });
+
+  // Function to handle changes in input fields
+  const handleInputChange = async (e) => {
+    let { name, value } = e.target;
+
+    // handle file for upload
+    if(name == 'playerphoto'){
+      let imageResult = value.files[0];
+      const storage = getStorage(firebaseApp);
+      const imageRef = ref(
+        storage,
+        `kpl/Player_${Math.floor(Math.random() * 90000) + 10000}`
+      );
+      await uploadBytes(imageRef, imageResult).then(async (res) => {
+        await getDownloadURL(res.ref).then((res) => {
+          value = res;
+        });
+      });
+    }
+    
+
+    setPlayerData({
+      ...playerData,
+      [name]: value,
+    });
+  };
+
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setisLoading(true);
+
+    //insert into table
+    fetch("/api/player", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(playerData),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setId(data.insertId);
+        setisLoading(false);
+      })
+      .catch((error) => console.error(error));
+
+    setisPaid(true);
+    setTimeout(() => {
+      router.push("/");
+    }, 5000);
+
+    console.log('Form submitted');
+    console.log(playerData);
+  };
+
+
+  async function handleSubmit1(event) {
     setisLoading(true);
 
     event.preventDefault();
@@ -274,19 +126,19 @@ export default function Page() {
         //     alert(error.message)
         //     console.error('Error:', error.message);
         //   });
-          // const response = await fetch("http://localhost:3001/upload", {
-          //   method: "POST",
-          //   headers: {
-          //     // Add this line to specify that you are sending a form with multipart/form-data
-          //     "Content-Type": "multipart/form-data",
-          //   },
-          //   body: formData,
-          // });
+        // const response = await fetch("http://localhost:3001/upload", {
+        //   method: "POST",
+        //   headers: {
+        //     // Add this line to specify that you are sending a form with multipart/form-data
+        //     "Content-Type": "multipart/form-data",
+        //   },
+        //   body: formData,
+        // });
 
-          // if(!response.ok) throw new Error(await response.text())
+        // if(!response.ok) throw new Error(await response.text())
 
-          // console.log('File uploaded successfully');
-          // values.push(imageResult.name);
+        // console.log('File uploaded successfully');
+        // values.push(imageResult.name);
 
         // } catch (error) {
         //   console.error('Error during file upload:', error);
@@ -306,22 +158,22 @@ export default function Page() {
       console.log(result)
       if (result) {
         //making payment status approved
-        values[values.length -1] = true
-        
+        values[values.length - 1] = true
+
         //insert into table
-      fetch("/api/player", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(values),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          setId(data.insertId);
-          setisLoading(false);
+        fetch("/api/player", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(values),
         })
-        .catch((error) => console.error(error));
+          .then((response) => response.json())
+          .then((data) => {
+            setId(data.insertId);
+            setisLoading(false);
+          })
+          .catch((error) => console.error(error));
 
         setisPaid(true);
         setTimeout(() => {
@@ -333,167 +185,109 @@ export default function Page() {
     }
   }
 
-  // if (id && !isPaid) {
-  //   return (
-  //     <PaymentPage
-  //       submit={() => {
-  //         setisPaid(true);
-  //         setTimeout(() => {
-  //           router.push("./");
-  //         }, 10000);
-  //       }}
-  //       id={id}
-  //     />
-  //   );
-  // } else 
-  if (isPaid) {
-    return (
-      <motion.div
-        className="flex flex-col justify-center items-center h-screen bg-white "
-        variants={container}
-        initial="hidden"
-        animate="visible"
-      >
-        <CheckCircleIcon width={100} height={100} color="green" />
-        <p className="font-bold mt-4 text-xl text-center">
-          Thanks for Registering! 
-          {/* <br />{" "}
-          {
-            "Once your payment is verified by Admin Team, then you will be Elligble for the Tournament"
-          } */}
-        </p>
-        {/* <p className="font-bold mt-4">
-          Admin Support:{" "}
-          <span className="font-semibold text-gray-500">8682021651</span>{" "}
-        </p> */}
-      </motion.div>
-    );
-  } else if (isLoading) {
-    return (
-      <motion.div className="flex flex-col justify-center items-center h-screen  ">
-        <img src="/loader.gif" alt="loader" class="w-52 h-52" />
-      </motion.div>
-    );
-  } else {
-    return (
-      <form
-        className="flex flex-col justify-between items-center h-full p-5"
-        onSubmit={handleSubmit}
-      >
-        <motion.div
-          className="bg-white w-full p-5 rounded-lg items-center justify-center flex flex-col shadow-md"
-          variants={container}
-          initial="hidden"
-          animate="visible"
-        >
-          <p className="font-semibold text-lg m-5">Player Register Form</p>
-          {/* <Pagination third /> */}
 
-          <>
-            <div className="grid grid-cols-2 gap-5 w-full p-5 text-sm">
-              {inputNames.map((item) => (
-                <div key={item.id}>
-                  <motion.label variants={itemAnimation}>
-                    {item.title}
-                    {item.required && <span className="text-red-600"> *</span>}
-                  </motion.label>
-                  {item.type != "select" && (
-                    // <motion.input
-                    //   id={item.id}
-                    //   variants={itemAnimation}
-                    //   type={item.type}
-                    //   required={item.required}
-                    //   placeholder={`${item.title}`}
-                    //   accept="image/png, image/jpeg"
-                    //   className={
-                    //     item.type == "file"
-                    //       ? "w-full outline-0  h-8 text-sm p-1 m-1"
-                    //       : "w-full outline-0 ring-1 rounded ring-slate-400 h-8 text-sm p-4 m-1"
-                    //   }
-                    // />
-                    <div className="bg-gray-200 flex items-center justify-center rounded-full p-2 px-4 m-2 w-full">
-            {/* <EnvelopeIcon height={20} widt  h={20} /> */}
-            <input
-              type="password"
-              required
-              placeholder="Password"
-              className="outline-0 mx-2 bg-gray-200 text-sm w-full"
-            />
+  return (
+    <div className="bg-gray-200 p-3">
+      <div className="bg-white rounded-xl flex flex-col items-center w-full p-2 py-4">
+        <p className="font-semibold">Player Register Form</p>
+
+        <form className="grid grid-cols-2 gap-3 p-5 w-full">
+          {/* Inputs */}
+          {[
+            { label: 'Player Name', type: 'text', name: 'name', required: true },
+            { label: 'Date of Birth', type: 'date', name: 'dob', required: true },
+            { label: 'Age', type: 'text', name: 'age', required: true },
+            { label: 'Contact Number', type: 'text', name: 'contact', required: true },
+            { label: 'Team Name', type: 'text', name: 'team', required: true },
+            { label: 'Area', type: 'text', name: 'area', required: true },
+            { label: 'Jersey Name', type: 'text', name: 'jersey', required: true },
+            { label: 'Jersey No', type: 'text', name: 'jerseyno', required: true },
+            { label: 'Player Photo', type: 'file', name: 'playerphoto', required: true },
+          ].map((input, index) => (
+            <div key={index} className="flex flex-col justify-center w-full gap-1 text-sm">
+              <label>{input.required ? `${input.label}*`: `${input.label}`}</label>
+              <input
+                className="outline-none ring-1 ring-indigo-100 my-2 p-2 px-4 rounded-full bg-gray-200 file:rounded-full"
+                type={input.type}
+                name={input.name}
+                value={playerData[input.name]}
+                placeholder={input.label}
+                onChange={handleInputChange}
+                required={input.required}
+              />
+            </div>
+          ))}
+
+          {/* Selects */}
+          {[
+            { label: 'Jersey Size', name: 'jerseysize', options: ['Small', 'Medium', 'Large', 'Extra Large(XL)', 'XXL', 'XXXL'], required: true },
+            { label: 'Player Role', name: 'playerrole', options: ['All Rounder', 'Batsman', 'Bowler'], required: true },
+            { label: 'Batting Style', name: 'battingstyle', options: ['','Right', 'Left'] },
+            { label: 'Bowling Style', name: 'bowlingstyle', options: ['','Fast', 'Medium', 'Spin'] },
+          ].map((select, index) => (
+            <div key={index} 
+              className={`flex flex-col justify-center w-full gap-1 text-sm 
+                ${select.name == 'battingstyle' && !['All Rounder', 'Batsman'].includes(playerData['playerrole']) ? 'hidden' : ''}
+                ${select.name == 'bowlingstyle' && !['All Rounder', 'Bowler'].includes(playerData['playerrole']) ? 'hidden' : ''}
+            `}>
+             <label>{select.required ? `${select.label}*`: `${select.label}`}</label>
+              <select 
+                className="outline-none p-2 px-4 ring-1 ring-indigo-100 my-2 rounded-full bg-gray-200" 
+                required={select.required}
+                name={select.name}
+                value={playerData[select.name]}
+                onChange={handleInputChange}
+              >
+                {select.options.map((option, index) => (
+                  <option key={index} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+            </div>
+          ))}
+
+          {/* Terms & Conditions */}
+          <div className="w-full flex flex-col text-sm col-span-2">
+            <h3 className="font-bold">Terms & Conditions:</h3>
+            <ol className="list-disc relative left-10 my-3 w-[90%] sm:w-full break-words">
+              <li>Player Registration Amount is Rs.111/-</li>
+              <li>Players Should be available for the whole tournament</li>
+              <li>If the players not available without any valid reason, player cannot participate in the tournament for the next 2 seasons</li>
+              <li>If the player Gets caught for chucking he cannot bowl for the Rest of the tournament</li>
+            </ol>
+            {/* Terms Checkbox */}
+            <div className="flex items-start mb-5">
+              <input
+                id="terms"
+                type="checkbox"
+                checked={isTermAccepted}
+                className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300"
+                required
+                onChange={() => setisTermAccepted(!isTermAccepted)}
+              />
+              <label htmlFor="terms" className="ms-2 text-sm font-medium text-gray-900 ml-2">
+                I agree with the{' '}
+                <a href="/terms" className="text-blue-600 hover:underline">
+                  terms and conditions
+                </a>
+              </label>
+            </div>
           </div>
-                  )}
-                  {item.type == "select" && (
-                    <motion.select
-                      variants={itemAnimation}
-                      className="w-full outline-0 ring-1 rounded ring-slate-400 h-8 text-sm pl-3 m-1"
-                      id={item.id}
-                    >
-                      {item.options.map((item) => (
-                        <option key={item.id} value={item.value}>
-                          {item.value == "true"
-                            ? "Yes"
-                            : item.value == "false"
-                            ? "No"
-                            : item.value}
-                        </option>
-                      ))}
-                    </motion.select>
-                  )}
-                </div>
-              ))}
-            </div>
-            <div className="w-full flex flex-col text-sm">
-              <h3 className="font-bold">Terms & Conditons:</h3>
-              <ol className="list-disc relative left-10 my-3 w-[90%] sm:w-full break-words">
-                <li>Player Registration Amount is Rs.111/-</li>
-                <li>Players Should be available for the whole tournament</li>
-                <li>
-                  If the players not available with out any valid reason, player
-                  cannot participate the tournament for next 2 seasons
-                </li>
-                <li>
-                  If the player Gets caught for chucking he cannot bowl for the
-                  Rest of the tournament
-                </li>
-              </ol>
-              {/* Terms */}
-              <div class="flex items-start mb-5">
-                <div class="flex items-center h-5">
-                  <input
-                    id="terms"
-                    type="checkbox"
-                    value={isTermAccepted}
-                    class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 "
-                    required
-                    onChange={() => setisTermAccepted(!isTermAccepted)}
-                  />
-                </div>
-                <label
-                  for="terms"
-                  class="ms-2 text-sm font-medium text-gray-900 ml-2"
-                >
-                  I agree with the{" "}
-                  <a
-                    href="/terms"
-                    class="text-blue-600 hover:underline"
-                  >
-                    terms and conditions
-                  </a>
-                </label>
-              </div>
-            </div>
-          </>
 
-          <motion.button
-            type="submit"
-            variants={itemAnimation}
-            className={`w-40 rounded ${isTermAccepted ? 'bg-indigo-400' :'bg-indigo-200'} h-10 p-2 flex justify-center items-center m-3 cursor-pointer text-white relative`}
-            whileHover={{ scale: 1.1 }}
-            disabled ={!isTermAccepted}
-          >
-            Pay to Register
-          </motion.button>
-        </motion.div>
-      </form>
-    );
-  }
+          {/* Submit Button */}
+          <div className="col-span-2 flex items-center justify-center">
+            <motion.button
+              type="submit"
+              className={`w-40 rounded ${isTermAccepted ? 'bg-indigo-400' : 'bg-indigo-200'} h-10 p-2 flex justify-center items-center m-3 cursor-pointer text-white`}
+              whileHover={{ scale: 1.1 }}
+              disabled={!isTermAccepted}
+            >
+              Pay to Register
+            </motion.button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
 }
