@@ -76,8 +76,9 @@ export default function PlayersCard({
         <CardBody className={`bg-white shadow p-3 mx-2 flex h-full items-center  rounded-md ${fromRegisterMenu ? 'w-[100%]' : 'w-[90%]'}`}>
           <CardItem
             translateZ="50"
+            className="flex items-center justify-center"
           >
-            {isLoading && <img src="/loading.svg" />}
+            {isLoading && <img src="/loading.svg" className="absolute rounded-full scale-90" />}
             <Image
               priority
               src={image}
