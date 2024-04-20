@@ -20,7 +20,7 @@ export default function PlayersCard({
   handleApproved,
   battingStyle,
   bowlingStyle,
-  showApprove = true
+  fromRegisterMenu = false
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -71,12 +71,9 @@ export default function PlayersCard({
       .catch((error) => console.error(error));
   }
   return (
-    <div onClick={() => {
-      console.log("here")
-      // setIsOpen(true)
-    }}>
-      <CardContainer className="flex flex-col" >
-        <CardBody className="bg-white shadow p-3 w-[90%] mx-2 flex h-full items-center  rounded-md">
+    <div>
+      <CardContainer >
+        <CardBody className={`bg-white shadow p-3 mx-2 flex h-full items-center  rounded-md ${fromRegisterMenu ? 'w-[100%]' : 'w-[90%]'}`}>
           <CardItem
             translateZ="50"
           >
@@ -145,7 +142,7 @@ export default function PlayersCard({
         </CardBody>
 
         {/* Pending or Approve */}
-        {showApprove && (approved ?
+        {!fromRegisterMenu && (approved ?
           (
             <CardItem className="absolute top-2 right-10" translateZ="40">
               <CheckCircleIcon
@@ -169,7 +166,7 @@ export default function PlayersCard({
       </CardContainer>
 
        {/* Full Screen */}
-       {isOpen == true && (
+       {!fromRegisterMenu && isOpen == true && (
           <PlayersCardFull
             name={name}
             id={id}

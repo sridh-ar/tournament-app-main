@@ -2,41 +2,45 @@
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { uploadBytes, ref, getStorage, getDownloadURL } from "firebase/storage";
+import { 
+  uploadBytes, 
+  ref, 
+  getStorage, 
+  getDownloadURL 
+} from "firebase/storage";
 import { firebaseApp } from "../../lib/firebase";
-import {ReceiptRefundIcon} from '@heroicons/react/24/outline'
-import PlayersCard from '../components/PlayersCard'
+import { ReceiptRefundIcon } from '@heroicons/react/24/outline';
+import PlayersCard from '../components/PlayersCard';
 
-function Loading(){
-  return(
-    <div className="w-full h-full flex items-center justify-center">
+function Loading() {
+  return (
+    <div className="w-screen h-screen flex items-center justify-center">
       <img src="/loader.gif" alt="" className="scale-50" />
     </div>
-  )
+  );
 }
 
+function ThanksPage() {
+  const data = JSON.parse(localStorage.getItem('playerData') || []);
 
-function ThanksPage(){
-  const data= JSON.parse(localStorage.getItem('playerData') || []) 
-  return(
-    <div className="w-full h-full flex flex-col items-center justify-center">
+  return (
+    <div className="w-screen h-screen flex flex-col items-center justify-center">
       <PlayersCard
-              key={data.name}
-              name={data.name}
-              jerseyname={data.jersey_name}
-              contact={data.contact_number}
-              role={data.player_role}
-              team={data.team_name}
-              id={data.id}
-              area={data.area}
-              image={data.player_photo}
-              approved={data.approved}
-              battingStyle={data.batting_style}
-              bowlingStyle={data.bowling_style}
-              showApprove = {false}
+        key={data.name}
+        name={data.name}
+        jerseyname={data.jersey_name}
+        contact={data.contact_number}
+        role={data.player_role}
+        team={data.team_name}
+        id={data.id}
+        area={data.area}
+        image={data.player_photo}
+        approved={data.approved}
+        battingStyle={data.batting_style}
+        bowlingStyle={data.bowling_style}
+        fromRegisterMenu
       />
       <img src="/thanks-brown.gif" alt="Thanks" className="w-56 relative -top-4" />
-
       <button 
         className="bg-indigo-300 rounded-full p-1.5 px-6 text-sm my-4 flex items-center justify-center gap-1"
         onClick={() => window.location.replace('/')}
@@ -45,7 +49,7 @@ function ThanksPage(){
         <ReceiptRefundIcon width={20} />
       </button>
     </div>
-  )
+  );
 }
 
 export default function Page() {
@@ -88,7 +92,7 @@ export default function Page() {
           value = res;
         });
       });
-    }    
+    }
 
     setPlayerData({
       ...playerData,
@@ -96,138 +100,141 @@ export default function Page() {
     });
   };
 
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setisLoading(true);
-
-    //insert into table
-    fetch("/api/player", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(playerData),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        localStorage.setItem('playerData',JSON.stringify(playerData))
-        setisLoading(false);
-        setisSubmited(true);
-      })
-      .catch((error) => {
-        alert(error.message);
-        router.push("/");
+  
+    try {
+      const response = await fetch("/api/player", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(playerData),
       });
+  
+      if (!response.ok) {
+        throw new Error('Failed to submit player data');
+      }
+  
+      localStorage.setItem('playerData', JSON.stringify(playerData));
+      setisLoading(false);
+      setisSubmited(true);
+    } catch (error) {
+      alert(error.message);
+      router.push("/");
+    }
   };
 
   return (
-    <div className="bg-gray-200 p-3">
-      <div className="bg-white rounded-xl flex flex-col items-center w-full p-2 py-4">
-        <p className="font-semibold my-2">Player Register Form</p>
-
-        {isLoading && <Loading />}
-
-        {isSubmited && <ThanksPage />}
-
-        {!isLoading && !isSubmited && 
-          <form className="grid grid-cols-2 gap-3 p-5 w-full" onSubmit={handleSubmit}>
-          {/* Inputs */}
-          {[
-            { label: 'Player Name', type: 'text', name: 'name', required: true },
-            { label: 'Date of Birth', type: 'date', name: 'dob', required: true },
-            { label: 'Age', type: 'text', name: 'age', required: true },
-            { label: 'Contact Number', type: 'text', name: 'contact_number', required: true },
-            { label: 'Team Name', type: 'text', name: 'team_name', required: true },
-            { label: 'Area', type: 'text', name: 'area', required: true },
-            { label: 'Jersey Name', type: 'text', name: 'jersey_name', required: true },
-            { label: 'Jersey No', type: 'text', name: 'jersey_no', required: true },
-            { label: 'Player Photo', type: 'file', name: 'player_photo', required: true },
-          ].map((input, index) => (
-            <div key={index} className="flex flex-col justify-center w-full gap-2 text-sm">
-              <label>{input.required ? `${input.label} *`: `${input.label}`}</label>
-              <input
-                className="outline-none ring-1 ring-indigo-100 p-2 h-9 w-full px-4 rounded-full bg-gray-200 file:rounded-full"
-                type={input.type}
-                name={input.name}
-                value={input.type == 'file' ? null : playerData[input.name]}
-                placeholder={input.label}
-                onChange={handleInputChange}
-                required= {input.required}
-              />
-            </div>
-          ))}
-
-          {/* Selects */}
-          {[
-            { label: 'Jersey Size', name: 'jersey_size', options: ['Small', 'Medium', 'Large', 'Extra Large(XL)', 'XXL', 'XXXL'], required: true },
-            { label: 'Player Role', name: 'player_role', options: ['All Rounder', 'Batsman', 'Bowler'], required: true },
-            { label: 'Batting Style', name: 'batting_style', options: ['','Right', 'Left'] },
-            { label: 'Bowling Style', name: 'bowling_style', options: ['','Fast', 'Medium', 'Spin'] },
-          ].map((select, index) => (
-            <div key={index} 
-              className={`flex flex-col justify-center w-full gap-1 text-sm 
-                ${select.name == 'batting_style' && !['All Rounder', 'Batsman'].includes(playerData['player_role']) ? 'hidden' : ''}
-                ${select.name == 'bowling_style' && !['All Rounder', 'Bowler'].includes(playerData['player_role']) ? 'hidden' : ''}
-            `}>
-             <label>{select.required ? `${select.label} *`: `${select.label}`}</label>
-              <select 
-                className="outline-none p-2 px-4 ring-1 h-9 w-full ring-indigo-100 my-2 rounded-full bg-gray-200" 
-                required={select.required}
-                name={select.name}
-                value={playerData[select.name]}
-                onChange={handleInputChange}
-              >
-                {select.options.map((option, index) => (
-                  <option key={index} value={option}>
-                    {option}
-                  </option>
-                ))}
-              </select>
-            </div>
-          ))}
-
-          {/* Terms & Conditions */}
-          <div className="w-full flex flex-col text-sm col-span-2">
-            <h3 className="font-bold">Terms & Conditions:</h3>
-            <ol className="list-disc relative left-10 my-3 w-[90%] sm:w-full break-words">
-              <li>Player Registration Amount is Rs.111/-</li>
-              <li>Players Should be available for the whole tournament</li>
-              <li>If the players not available without any valid reason, player cannot participate in the tournament for the next 2 seasons</li>
-              <li>If the player Gets caught for chucking he cannot bowl for the Rest of the tournament</li>
-            </ol>
-            {/* Terms Checkbox */}
-            <div className="flex items-start mb-5">
-              <input
-                id="terms"
-                type="checkbox"
-                checked={isTermAccepted}
-                className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300"
-                required
-                onChange={() => setisTermAccepted(!isTermAccepted)}
-              />
-              <label htmlFor="terms" className="ms-2 text-sm font-medium text-gray-900 ml-2">
-                I agree with the{' '}
-                <a href="/terms" className="text-blue-600 hover:underline">
-                  terms and conditions
-                </a>
-              </label>
-            </div>
+    <>
+      {isLoading && <Loading />}
+      {isSubmited && <ThanksPage />}
+      {!isLoading && !isSubmited && (
+        <div className="bg-gray-200 p-3">
+          <div className="bg-white rounded-xl flex flex-col items-center w-full p-2 py-4">
+            <p className="font-semibold my-2">Player Register Form</p>
+            <form className="grid grid-cols-2 gap-3 p-5 w-full" onSubmit={handleSubmit}>
+              {/* Inputs */}
+              {[
+                { label: 'Player Name', type: 'text', name: 'name', required: true },
+                { label: 'Date of Birth', type: 'date', name: 'dob', required: true },
+                { label: 'Age', type: 'text', name: 'age', required: true },
+                { label: 'Contact Number', type: 'text', name: 'contact_number', required: true },
+                { label: 'Team Name', type: 'text', name: 'team_name', required: true },
+                { label: 'Area', type: 'text', name: 'area', required: true },
+                { label: 'Jersey Name', type: 'text', name: 'jersey_name', required: true },
+                { label: 'Jersey No', type: 'text', name: 'jersey_no', required: true },
+                { label: 'Player Photo', type: 'file', name: 'player_photo', required: true },
+              ].map((input, index) => (
+                <div key={index} className="flex flex-col justify-center w-full gap-2 text-sm">
+                  <label>{input.required ? `${input.label} *`: `${input.label}`}</label>
+                  <input
+                    className="outline-none ring-1 ring-indigo-100 p-2 h-9 w-full px-4 rounded-full bg-gray-200 file:rounded-full"
+                    type={input.type}
+                    name={input.name}
+                    value={input.type === 'file' ? null : playerData[input.name]}
+                    placeholder={input.label}
+                    onChange={handleInputChange}
+                    required={input.required}
+                  />
+                </div>
+              ))}
+              
+              {/* Selects */}
+              {[
+                { label: 'Jersey Size', name: 'jersey_size', options: ['Small', 'Medium', 'Large', 'Extra Large(XL)', 'XXL', 'XXXL'], required: true },
+                { label: 'Player Role', name: 'player_role', options: ['All Rounder', 'Batsman', 'Bowler'], required: true },
+                { label: 'Batting Style', name: 'batting_style', options: ['', 'Right', 'Left'] },
+                { label: 'Bowling Style', name: 'bowling_style', options: ['', 'Fast', 'Medium', 'Spin'] },
+              ].map((select, index) => (
+                <div key={index} 
+                  className={`flex flex-col justify-center w-full gap-1 text-sm 
+                    ${select.name === 'batting_style' && !['All Rounder', 'Batsman'].includes(playerData['player_role']) ? 'hidden' : ''}
+                    ${select.name === 'bowling_style' && !['All Rounder', 'Bowler'].includes(playerData['player_role']) ? 'hidden' : ''}
+                  `}
+                >
+                  <label>{select.required ? `${select.label} *`: `${select.label}`}</label>
+                  <select 
+                    className="outline-none p-2 px-4 ring-1 h-9 w-full ring-indigo-100 my-2 rounded-full bg-gray-200" 
+                    required={select.required}
+                    name={select.name}
+                    value={playerData[select.name]}
+                    onChange={handleInputChange}
+                  >
+                    {select.options.map((option, index) => (
+                      <option key={index} value={option}>
+                        {option}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              ))}
+              
+              {/* Terms & Conditions */}
+              <div className="w-full flex flex-col text-sm col-span-2">
+                <h3 className="font-bold">Terms & Conditions:</h3>
+                <ol className="list-disc relative left-10 my-3 w-[90%] sm:w-full break-words">
+                  <li>Player Registration Amount is Rs.111/-</li>
+                  <li>Players Should be available for the whole tournament</li>
+                  <li>If the players not available without any valid reason, player cannot participate in the tournament for the next 2 seasons</li>
+                  <li>If the player Gets caught for chucking he cannot bowl for the Rest of the tournament</li>
+                </ol>
+                
+                {/* Terms Checkbox */}
+                <div className="flex items-start mb-5">
+                  <input
+                    id="terms"
+                    type="checkbox"
+                    checked={isTermAccepted}
+                    className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300"
+                    required
+                    onChange={() => setisTermAccepted(!isTermAccepted)}
+                  />
+                  <label htmlFor="terms" className="ms-2 text-sm font-medium text-gray-900 ml-2">
+                    I agree with the{' '}
+                    <a href="/terms" className="text-blue-600 hover:underline">
+                      terms and conditions
+                    </a>
+                  </label>
+                </div>
+              </div>
+              
+              {/* Submit Button */}
+              <div className="col-span-2 flex items-center justify-center">
+                <motion.button
+                  type="submit"
+                  className={`w-40 rounded ${isTermAccepted ? 'bg-indigo-400' : 'bg-indigo-200'} h-10 p-2 flex justify-center items-center m-3 cursor-pointer text-white`}
+                  whileHover={{ scale: 1.1 }}
+                  disabled={!isTermAccepted}
+                >
+                  Pay to Register
+                </motion.button>
+              </div>
+            </form>
           </div>
-
-          {/* Submit Button */}
-          <div className="col-span-2 flex items-center justify-center">
-            <motion.button
-              type="submit"
-              className={`w-40 rounded ${isTermAccepted ? 'bg-indigo-400' : 'bg-indigo-200'} h-10 p-2 flex justify-center items-center m-3 cursor-pointer text-white`}
-              whileHover={{ scale: 1.1 }}
-              disabled={!isTermAccepted}
-            >
-              Pay to Register
-            </motion.button>
-          </div>
-        </form>}
-      </div>
-    </div>
+        </div>
+      )}
+    </>
   );
 }
