@@ -15,7 +15,7 @@ import PlayersCard from '../components/PlayersCard';
 function Loading() {
   return (
     <div className="w-screen h-screen flex items-center justify-center">
-      <img src="/loader.gif" alt="" className="scale-50" />
+      <img src="/loader.svg" alt="" className="w-32" />
     </div>
   );
 }
@@ -58,7 +58,14 @@ function ThanksPage() {
         bowlingStyle={data.bowling_style}
         fromRegisterMenu
       />
-      <img src="/thanks-brown.gif" alt="Thanks" className="w-56 relative -top-4" />
+      <motion.img 
+        src="/thanks-brown.gif" 
+        alt="Thanks" 
+        className="w-56 relative -z-20"
+        initial={{opacity:0,top:-200}}
+        animate={{opacity:1,top:-20}}
+        transition={{duration:0.5}}
+      />
       <button 
         className="bg-indigo-300 rounded-full p-1.5 px-6 text-sm my-4 flex items-center justify-center gap-1"
         onClick={() => window.location.replace('/')}
