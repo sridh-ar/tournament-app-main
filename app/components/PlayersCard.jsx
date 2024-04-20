@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 import Image from "next/image";
 import { useState } from "react";
@@ -79,16 +80,13 @@ export default function PlayersCard({
             className="flex items-center justify-center"
           >
             {isLoading && <img src="/loading.svg" className="absolute rounded-full scale-90" />}
-            <Image
-              priority
-              src={image}
-              alt="Rounded avatar"
-              width={200}
-              height={200}
-              className={`w-40 h-40 object-cover mx-5 mr-7 rounded-full col-span-1 ring-1 ring-gray-200 p-0.5 shadow-md `}
+            <img 
+              src={image} 
+              alt="Rounded avatar" 
               loading="eager"
-              onLoadingComplete={() => setIsLoading(false)}
+              onLoad={() => setIsLoading(false)}
               onClick={() => setIsOpen(true)}
+              className={`w-40 h-40 object-cover mx-5 mr-7 rounded-full col-span-1 ring-1 ring-gray-200 p-0.5 shadow-md `}
             />
           </CardItem>
 

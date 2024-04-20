@@ -1,7 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { 
   uploadBytes, 
   ref, 
@@ -21,7 +21,25 @@ function Loading() {
 }
 
 function ThanksPage() {
+  const [isRendered, setIsRendered] = useState(false);
   const data = JSON.parse(localStorage.getItem('playerData') || []);
+
+  useEffect(() => {
+    // Set a short delay to simulate rendering
+    const timeout = setTimeout(() => {
+      setIsRendered(true);
+    }, 2000);
+
+    // Clean up the timeout on unmount
+    return () => clearTimeout(timeout);
+  }, []); // Run only once after the component mounts
+
+  if (!isRendered) {
+    // Render a loading screen until the component is fully rendered
+    return (
+      <Loading />
+    );
+  }
 
   return (
     <div className="w-screen h-screen flex flex-col items-center justify-center">
