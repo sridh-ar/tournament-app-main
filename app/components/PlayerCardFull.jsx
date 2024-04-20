@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import Image from "next/image";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
@@ -55,15 +56,16 @@ export default function PlayersCardFull({
             {name.split(' ')[1] && <p className="text-5xl capitalize">{name.replace(name.split(' ')[0], '').trim()}</p>}
             <p className="text-3xl capitalize">{team}</p>
           </section>
-          <Image
-            src="/demo.png"
+          <div className="col-span-2 flex justify-center">
+          <img
+            src={image}
             alt="Rounded avatar"
-            width={1000}
-            height={1000}
-            className="w-full col-span-2 shadow-xl"
+            className="w-[80%] shadow-xl"
             loading="eager"
             onLoadingComplete={() => setPlayerLoading(false)}
           />
+          </div>
+         
 
           <table className="text-2xl col-span-2">
             <tr className="bg-gray-800">
