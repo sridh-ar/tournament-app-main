@@ -1,7 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { 
   uploadBytes, 
   ref, 
@@ -64,7 +64,7 @@ function ThanksPage() {
         className="w-56 relative -z-20"
         initial={{opacity:0,top:-200}}
         animate={{opacity:1,top:-20}}
-        transition={{duration:0.5}}
+        transition={{duration:0.5,delay:0.3}}
       />
       <button 
         className="bg-indigo-300 rounded-full p-1.5 px-6 text-sm my-4 flex items-center justify-center gap-1"
@@ -140,7 +140,7 @@ export default function Page() {
       });
   
       if (!response.ok) {
-        throw new Error('Failed to submit player data');
+        throw new Error('Failed to submit player data, Contact Admin');
       }
   
       localStorage.setItem('playerData', JSON.stringify(playerData));
@@ -165,7 +165,7 @@ export default function Page() {
               {[
                 { label: 'Player Name', type: 'text', name: 'name', required: true },
                 { label: 'Date of Birth', type: 'date', name: 'dob', required: true },
-                { label: 'Age', type: 'text', name: 'number', required: true },
+                { label: 'Age', type: 'number', name: 'age', required: true },
                 { label: 'Contact Number', type: 'number', name: 'contact_number', required: true },
                 { label: 'Team Name', type: 'text', name: 'team_name', required: true },
                 { label: 'Area', type: 'text', name: 'area', required: true },
