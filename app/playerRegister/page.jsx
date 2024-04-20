@@ -21,25 +21,25 @@ function Loading() {
 }
 
 function ThanksPage() {
-  const [isRendered, setIsRendered] = useState(false);
+  // const [isRendered, setIsRendered] = useState(false);
   const data = JSON.parse(localStorage.getItem('playerData') || []);
 
-  useEffect(() => {
-    // Set a short delay to simulate rendering
-    const timeout = setTimeout(() => {
-      setIsRendered(true);
-    }, 2000);
+  // useEffect(() => {
+  //   // Set a short delay to simulate rendering
+  //   const timeout = setTimeout(() => {
+  //     setIsRendered(true);
+  //   }, 2000);
 
-    // Clean up the timeout on unmount
-    return () => clearTimeout(timeout);
-  }, []); // Run only once after the component mounts
+  //   // Clean up the timeout on unmount
+  //   return () => clearTimeout(timeout);
+  // }, []); // Run only once after the component mounts
 
-  if (!isRendered) {
-    // Render a loading screen until the component is fully rendered
-    return (
-      <Loading />
-    );
-  }
+  // if (!isRendered) {
+  //   // Render a loading screen until the component is fully rendered
+  //   return (
+  //     <Loading />
+  //   );
+  // }
 
   return (
     <div className="w-screen h-screen flex flex-col items-center justify-center">
@@ -165,12 +165,12 @@ export default function Page() {
               {[
                 { label: 'Player Name', type: 'text', name: 'name', required: true },
                 { label: 'Date of Birth', type: 'date', name: 'dob', required: true },
-                { label: 'Age', type: 'text', name: 'age', required: true },
-                { label: 'Contact Number', type: 'text', name: 'contact_number', required: true },
+                { label: 'Age', type: 'text', name: 'number', required: true },
+                { label: 'Contact Number', type: 'number', name: 'contact_number', required: true },
                 { label: 'Team Name', type: 'text', name: 'team_name', required: true },
                 { label: 'Area', type: 'text', name: 'area', required: true },
                 { label: 'Jersey Name', type: 'text', name: 'jersey_name', required: true },
-                { label: 'Jersey No', type: 'text', name: 'jersey_no', required: true },
+                { label: 'Jersey No', type: 'number', name: 'jersey_no', required: true },
                 { label: 'Player Photo', type: 'file', name: 'player_photo', required: true },
               ].map((input, index) => (
                 <div key={index} className="flex flex-col justify-center w-full gap-2 text-sm">
