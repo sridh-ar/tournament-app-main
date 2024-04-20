@@ -128,6 +128,7 @@ export default function Page() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setisLoading(true);
+    localStorage.removeItem('playerData');
   
     try {
       const response = await fetch("/api/player", {
