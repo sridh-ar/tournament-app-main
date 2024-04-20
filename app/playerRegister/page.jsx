@@ -64,8 +64,9 @@ function ThanksPage() {
         className="w-56 relative -z-20"
         initial={{opacity:0,top:-200}}
         animate={{opacity:1,top:-20}}
-        transition={{duration:0.5,delay:0.3}}
+        transition={{duration:0.5}}
       />
+      <p className="font-semibold">Pleae take a Screenshot for Reference</p>
       <button 
         className="bg-indigo-300 rounded-full p-1.5 px-6 text-sm my-4 flex items-center justify-center gap-1"
         onClick={() => window.location.replace('/')}
