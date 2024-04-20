@@ -77,6 +77,7 @@ export default function PlayersCard({
           <CardItem
             translateZ="50"
           >
+            {isLoading && <img src="/loading.svg" />}
             <Image
               priority
               src={image}
