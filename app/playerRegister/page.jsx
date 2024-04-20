@@ -1,36 +1,74 @@
 "use client";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
-import { CheckCircleIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
-import PaymentPage from "../components/PaymentPage";
 import { uploadBytes, ref, getStorage, getDownloadURL } from "firebase/storage";
 import { firebaseApp } from "../../lib/firebase";
-import makePayment from "../../lib/payment/razor_paymentGateway";
+import {ReceiptRefundIcon} from '@heroicons/react/24/outline'
+import PlayersCard from '../components/PlayersCard'
+
+function Loading(){
+  return(
+    <div className="w-full h-full flex items-center justify-center">
+      <img src="/loader.gif" alt="" className="scale-50" />
+    </div>
+  )
+}
+
+
+function ThanksPage(){
+  const data= JSON.parse(localStorage.getItem('playerData') || []) 
+  return(
+    <div className="w-full h-full flex flex-col items-center justify-center">
+      <PlayersCard
+              key={data.name}
+              name={data.name}
+              jerseyname={data.jersey_name}
+              contact={data.contact_number}
+              role={data.player_role}
+              team={data.team_name}
+              id={data.id}
+              area={data.area}
+              image={data.player_photo}
+              approved={data.approved}
+              battingStyle={data.batting_style}
+              bowlingStyle={data.bowling_style}
+              showApprove = {false}
+      />
+      <img src="/thanks-brown.gif" alt="Thanks" className="w-56 relative -top-4" />
+
+      <button 
+        className="bg-indigo-300 rounded-full p-1.5 px-6 text-sm my-4 flex items-center justify-center gap-1"
+        onClick={() => window.location.replace('/')}
+      >
+        Return to Home
+        <ReceiptRefundIcon width={20} />
+      </button>
+    </div>
+  )
+}
 
 export default function Page() {
-  // const [base64Image, setBase64Image] = useState("");
-  const [isPaid, setisPaid] = useState(false);
   const [isLoading, setisLoading] = useState(false);
+  const [isSubmited, setisSubmited] = useState(false);
   const [isTermAccepted, setisTermAccepted] = useState(false);
-  const [id, setId] = useState("");
   const router = useRouter();
 
   const [playerData, setPlayerData] = useState({
     name: '',
     dob: '',
     age: '',
-    contact: '',
-    team: '',
+    contact_number: '',
+    team_name: '',
     area: '',
-    jersey: '',
-    jerseyno: '',
-    jerseysize: '',
-    playerphoto: '',
-    playerrole: 'All Rounder',
-    battingstyle: '',
-    bowlingstyle: '',
-    istermaccepted: false,
+    jersey_name: '',
+    jersey_no: '',
+    jersey_size: 'Small',
+    player_photo: '',
+    player_role: 'All Rounder',
+    batting_style: '',
+    bowling_style: '',
+    approved: false,
   });
 
   // Function to handle changes in input fields
@@ -38,8 +76,8 @@ export default function Page() {
     let { name, value } = e.target;
 
     // handle file for upload
-    if(name == 'playerphoto'){
-      let imageResult = value.files[0];
+    if(name == 'player_photo'){
+      let imageResult = e.target.files[0];
       const storage = getStorage(firebaseApp);
       const imageRef = ref(
         storage,
@@ -50,8 +88,7 @@ export default function Page() {
           value = res;
         });
       });
-    }
-    
+    }    
 
     setPlayerData({
       ...playerData,
@@ -74,163 +111,66 @@ export default function Page() {
     })
       .then((response) => response.json())
       .then((data) => {
-        setId(data.insertId);
+        localStorage.setItem('playerData',JSON.stringify(playerData))
         setisLoading(false);
+        setisSubmited(true);
       })
-      .catch((error) => console.error(error));
-
-    setisPaid(true);
-    setTimeout(() => {
-      router.push("/");
-    }, 5000);
-
-    console.log('Form submitted');
-    console.log(playerData);
+      .catch((error) => {
+        alert(error.message);
+        router.push("/");
+      });
   };
-
-
-  async function handleSubmit1(event) {
-    setisLoading(true);
-
-    event.preventDefault();
-    let values = [];
-    let imageResult = "";
-    for (let i = 0; i < 13; i++) {
-      //storing the image
-      if (i == 9) {
-        //Storing it in Firebase
-        imageResult = event.target[i].files[0];
-        const storage = getStorage(firebaseApp);
-        const imageRef = ref(
-          storage,
-          `kpl/Player_${Math.floor(Math.random() * 90000) + 10000}`
-        );
-        await uploadBytes(imageRef, imageResult).then(async (res) => {
-          await getDownloadURL(res.ref).then((res) => {
-            values.push(res);
-          });
-        });
-
-        //Storing it on local:
-        // const formData = new FormData();
-        // formData.append('image', imageResult);
-        // // formData.append('path', 'uploads');
-
-        // try {
-        //   axios.post('http://195.35.21.236:3001/upload', formData)
-        //   .then(response => {
-        //     alert(response.data)
-        //     console.log('API Response:', response.data);
-        //   })
-        //   .catch(error => {
-        //     alert(error.message)
-        //     console.error('Error:', error.message);
-        //   });
-        // const response = await fetch("http://localhost:3001/upload", {
-        //   method: "POST",
-        //   headers: {
-        //     // Add this line to specify that you are sending a form with multipart/form-data
-        //     "Content-Type": "multipart/form-data",
-        //   },
-        //   body: formData,
-        // });
-
-        // if(!response.ok) throw new Error(await response.text())
-
-        // console.log('File uploaded successfully');
-        // values.push(imageResult.name);
-
-        // } catch (error) {
-        //   console.error('Error during file upload:', error);
-        //   alert(JSON.stringify(error.message))
-        //   window.location.replace('/')
-        // }
-      } else {
-        values.push(event.target[i].value);
-      }
-    }
-    values.push(false);
-    console.log("Values for the player - ", values);
-    // settempData(values);
-    //Payment calling
-    if (imageResult) {
-      const result = await makePayment(values[0], "", values[3], 111);
-      console.log(result)
-      if (result) {
-        //making payment status approved
-        values[values.length - 1] = true
-
-        //insert into table
-        fetch("/api/player", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(values),
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            setId(data.insertId);
-            setisLoading(false);
-          })
-          .catch((error) => console.error(error));
-
-        setisPaid(true);
-        setTimeout(() => {
-          router.push("/");
-        }, 5000);
-      } else {
-        alert("Something went wrong, please contact Admin");
-      }
-    }
-  }
-
 
   return (
     <div className="bg-gray-200 p-3">
       <div className="bg-white rounded-xl flex flex-col items-center w-full p-2 py-4">
-        <p className="font-semibold">Player Register Form</p>
+        <p className="font-semibold my-2">Player Register Form</p>
 
-        <form className="grid grid-cols-2 gap-3 p-5 w-full">
+        {isLoading && <Loading />}
+
+        {isSubmited && <ThanksPage />}
+
+        {!isLoading && !isSubmited && 
+          <form className="grid grid-cols-2 gap-3 p-5 w-full" onSubmit={handleSubmit}>
           {/* Inputs */}
           {[
             { label: 'Player Name', type: 'text', name: 'name', required: true },
             { label: 'Date of Birth', type: 'date', name: 'dob', required: true },
             { label: 'Age', type: 'text', name: 'age', required: true },
-            { label: 'Contact Number', type: 'text', name: 'contact', required: true },
-            { label: 'Team Name', type: 'text', name: 'team', required: true },
+            { label: 'Contact Number', type: 'text', name: 'contact_number', required: true },
+            { label: 'Team Name', type: 'text', name: 'team_name', required: true },
             { label: 'Area', type: 'text', name: 'area', required: true },
-            { label: 'Jersey Name', type: 'text', name: 'jersey', required: true },
-            { label: 'Jersey No', type: 'text', name: 'jerseyno', required: true },
-            { label: 'Player Photo', type: 'file', name: 'playerphoto', required: true },
+            { label: 'Jersey Name', type: 'text', name: 'jersey_name', required: true },
+            { label: 'Jersey No', type: 'text', name: 'jersey_no', required: true },
+            { label: 'Player Photo', type: 'file', name: 'player_photo', required: true },
           ].map((input, index) => (
             <div key={index} className="flex flex-col justify-center w-full gap-2 text-sm">
-              <label>{input.required ? `${input.label}*`: `${input.label}`}</label>
+              <label>{input.required ? `${input.label} *`: `${input.label}`}</label>
               <input
                 className="outline-none ring-1 ring-indigo-100 p-2 h-9 w-full px-4 rounded-full bg-gray-200 file:rounded-full"
                 type={input.type}
                 name={input.name}
-                value={playerData[input.name]}
+                value={input.type == 'file' ? null : playerData[input.name]}
                 placeholder={input.label}
                 onChange={handleInputChange}
-                required={input.required}
+                required= {input.required}
               />
             </div>
           ))}
 
           {/* Selects */}
           {[
-            { label: 'Jersey Size', name: 'jerseysize', options: ['Small', 'Medium', 'Large', 'Extra Large(XL)', 'XXL', 'XXXL'], required: true },
-            { label: 'Player Role', name: 'playerrole', options: ['All Rounder', 'Batsman', 'Bowler'], required: true },
-            { label: 'Batting Style', name: 'battingstyle', options: ['','Right', 'Left'] },
-            { label: 'Bowling Style', name: 'bowlingstyle', options: ['','Fast', 'Medium', 'Spin'] },
+            { label: 'Jersey Size', name: 'jersey_size', options: ['Small', 'Medium', 'Large', 'Extra Large(XL)', 'XXL', 'XXXL'], required: true },
+            { label: 'Player Role', name: 'player_role', options: ['All Rounder', 'Batsman', 'Bowler'], required: true },
+            { label: 'Batting Style', name: 'batting_style', options: ['','Right', 'Left'] },
+            { label: 'Bowling Style', name: 'bowling_style', options: ['','Fast', 'Medium', 'Spin'] },
           ].map((select, index) => (
             <div key={index} 
               className={`flex flex-col justify-center w-full gap-1 text-sm 
-                ${select.name == 'battingstyle' && !['All Rounder', 'Batsman'].includes(playerData['playerrole']) ? 'hidden' : ''}
-                ${select.name == 'bowlingstyle' && !['All Rounder', 'Bowler'].includes(playerData['playerrole']) ? 'hidden' : ''}
+                ${select.name == 'batting_style' && !['All Rounder', 'Batsman'].includes(playerData['player_role']) ? 'hidden' : ''}
+                ${select.name == 'bowling_style' && !['All Rounder', 'Bowler'].includes(playerData['player_role']) ? 'hidden' : ''}
             `}>
-             <label>{select.required ? `${select.label}*`: `${select.label}`}</label>
+             <label>{select.required ? `${select.label} *`: `${select.label}`}</label>
               <select 
                 className="outline-none p-2 px-4 ring-1 h-9 w-full ring-indigo-100 my-2 rounded-full bg-gray-200" 
                 required={select.required}
@@ -286,7 +226,7 @@ export default function Page() {
               Pay to Register
             </motion.button>
           </div>
-        </form>
+        </form>}
       </div>
     </div>
   );

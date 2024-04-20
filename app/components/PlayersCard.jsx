@@ -20,6 +20,7 @@ export default function PlayersCard({
   handleApproved,
   battingStyle,
   bowlingStyle,
+  showApprove = true
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -144,7 +145,7 @@ export default function PlayersCard({
         </CardBody>
 
         {/* Pending or Approve */}
-        {approved ?
+        {showApprove && (approved ?
           (
             <CardItem className="absolute top-2 right-10" translateZ="40">
               <CheckCircleIcon
@@ -164,7 +165,7 @@ export default function PlayersCard({
               />
             </CardItem>
 
-          )}
+          ))}
       </CardContainer>
 
        {/* Full Screen */}
