@@ -12,7 +12,7 @@ import {
 } from "@heroicons/react/24/solid";
 
 // SideBarItem component
-const SideBarItem = ({ isActive, name, setActiveMenu}) => {
+const SideBarItem = ({ isActive, name, setActiveMenu, playerCount = null}) => {
   return (
     <div
       className={`ml-10 flex cursor-pointer w-full p-2 my-1 text-sm font-medium rounded-l-full relative pl-4 ${isActive ? 'text-black bg-gray-200' : 'text-white'}`}
@@ -33,12 +33,12 @@ const SideBarItem = ({ isActive, name, setActiveMenu}) => {
       {name === "Players" && <UserGroupIcon className="w-4 h-4 mr-2" color={isActive ? "#54AAB3" : ""}/>}
       {name === "Support" && <ChatBubbleOvalLeftEllipsisIcon className="w-4 h-4 mr-2" color={isActive ? "#54AAB3" : ""}/>}
       {name === "Sign Out" && <ArrowRightOnRectangleIcon className="w-4 h-4 mr-2" color={isActive ? "#54AAB3" : ""}/>}
-      {name}
+      {`${name} ${playerCount ? `(${playerCount})` : ''}`}
     </div>
   );
 };
 
-export default function SideBar({ setActiveMenu ,currentActiveMenu }) {
+export default function SideBar({ setActiveMenu ,currentActiveMenu, playerCount }) {
   const router = useRouter();
 
   function handleLogout() {
@@ -69,6 +69,7 @@ export default function SideBar({ setActiveMenu ,currentActiveMenu }) {
         isActive={currentActiveMenu === "Players"}
         name="Players"
         setActiveMenu={(name) => setActiveMenu(name)}
+        playerCount = {playerCount}
       />
 
        {/* DIvider */}

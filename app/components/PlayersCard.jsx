@@ -79,7 +79,7 @@ export default function PlayersCard({
             translateZ="50"
             className="flex items-center justify-center"
           >
-            {isLoading && <img src="/loading.svg" className="absolute rounded-full scale-90" />}
+            {isLoading && <img src="/loading2.svg" className="absolute rounded-full scale-50" />}
             <img 
               src={image} 
               alt="Rounded avatar" 
