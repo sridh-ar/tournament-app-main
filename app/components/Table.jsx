@@ -19,7 +19,7 @@ export default function Table({ selectedTeamModal }) {
       .then((response) => response.json())
       .then((data) => {
         setTeamData(data);
-        // setisLoading(false);
+        setisLoading(false);
       })
       .catch((error) => console.error(error));
   }, [isOpen, isAddOpen]);
@@ -81,7 +81,7 @@ export default function Table({ selectedTeamModal }) {
       .then((response) => response.json())
       .then((data) => {
         setIsOpen(false);
-        // setisLoading(true);
+        setisLoading(true);
       })
       .catch((error) => console.error(error));
   }
