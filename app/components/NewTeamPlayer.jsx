@@ -215,7 +215,7 @@ export default function NewTeamPlayer({ closeFunction, selectedTeam }) {
         )}
         {isLoading && (
           <motion.div className="flex flex-col justify-center items-center h-screen  ">
-            <img src="/loader.gif" alt="loader" class="w-52 h-52" />
+            <img src="/loading2.svg" alt="loader" class="w-52 h-52" />
           </motion.div>
         )}
       </motion.div>

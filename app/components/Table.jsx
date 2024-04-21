@@ -19,7 +19,7 @@ export default function Table({ selectedTeamModal }) {
       .then((response) => response.json())
       .then((data) => {
         setTeamData(data);
-        setisLoading(false);
+        // setisLoading(false);
       })
       .catch((error) => console.error(error));
   }, [isOpen, isAddOpen]);
@@ -81,7 +81,7 @@ export default function Table({ selectedTeamModal }) {
       .then((response) => response.json())
       .then((data) => {
         setIsOpen(false);
-        setisLoading(true);
+        // setisLoading(true);
       })
       .catch((error) => console.error(error));
   }
@@ -191,7 +191,7 @@ export default function Table({ selectedTeamModal }) {
       )}
       {isLoading && (
         <div class="flex items-center justify-center w-full h-full bg-gray-100 ">
-          <img src="/loader.gif" alt="loader" class="w-52 h-52" />
+          <img src="/loading2.svg" alt="loader" class="w-36 h-36" />
           {/* <svg
             aria-hidden="true"
             class="w-16 h-16 mr-2 text-gray-200 animate-spin fill-indigo-400"

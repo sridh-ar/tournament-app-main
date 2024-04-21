@@ -371,7 +371,7 @@ export default function Page() {
   } else if (isLoading) {
     return (
       <motion.div className="flex flex-col justify-center items-center h-screen  ">
-        <img src="/loader.gif" alt="loader" class="w-52 h-52" />
+        <img src="/loading2.svg" alt="loader" class="w-52 h-52" />
       </motion.div>
     );
   } else {
@@ -387,7 +387,6 @@ export default function Page() {
           animate="visible"
         >
           <p className="font-semibold text-lg m-5">Player Register Form</p>
-          {/* <Pagination third /> */}
 
           <>
             <div className="grid grid-cols-2 gap-5 w-full p-5 text-sm">

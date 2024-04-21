@@ -6,7 +6,6 @@ import PlayerDashboard from "../components/PlayerDashboard";
 import SideBar from "../components/SideBar";
 import Table from "../components/Table";
 import TeamTable from "../components/TeamTable";
-import FileUpload from "../components/FileUpload";
 
 export default function Page() {
   const [category, setCategory] = useState("Dashboard");
@@ -48,7 +47,6 @@ export default function Page() {
           <Table selectedTeamModal={(team) => setselectedTeam(team)} />
         )}
         {category == "Players" && <PlayerDashboard />}
-        {category == "logoUpload" && <FileUpload />}
         {selectedTeam.length > 0 && <TeamTable team_detail={selectedTeam} />}
       </div>
     );

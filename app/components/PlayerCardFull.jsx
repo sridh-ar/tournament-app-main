@@ -25,7 +25,7 @@ export default function PlayersCardFull({
       <div className="relative bg-white">
         {/* BG Image */}
         <Image
-          src="/abcd.jpg"
+          src="stadium_bg.jpg"
           alt="Rounded avatar"
           width={1000}
           height={1000}
@@ -98,7 +98,7 @@ export default function PlayersCardFull({
         </div>        
       </div>
       {(isBgLoading && isPlayerLoading) && <div className="relative bg-white w-screen h-screen flex items-center justify-center">
-        <img src="/loader.gif" alt="loader" className="w-52 h-52" />
+        <img src="/loading2.svg" alt="loader" className="w-52 h-52" />
       </div>}
     </div>
   );
