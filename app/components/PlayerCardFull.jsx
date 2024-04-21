@@ -50,20 +50,20 @@ export default function PlayersCardFull({
         <Meteors number={30} />
 
         {/* Modal Body */}
-        <div className="absolute text-white w-full h-screen grid items-end p-5 px-20 grid-cols-5">
+        <div className="absolute text-white w-full h-screen grid items-end p-5 px-20 grid-cols-5 ">
           <section className="col-span-1">
             <p className="text-7xl capitalize">{name.split(' ')[0]}</p>
             {name.split(' ')[1] && <p className="text-5xl capitalize">{name.replace(name.split(' ')[0], '').trim()}</p>}
             <p className="text-3xl capitalize">{team}</p>
           </section>
           <div className="col-span-2 flex justify-center">
-          <img
-            src={image}
-            alt="Rounded avatar"
-            className="w-[80%] shadow-xl"
-            loading="eager"
-            onLoadingComplete={() => setPlayerLoading(false)}
-          />
+            <img
+              src={image}
+              alt="Rounded avatar"
+              className="w-[80%] max-h-[90vh] object-contain shadow-xl"
+              loading="eager"
+              onLoadingComplete={() => setPlayerLoading(false)}
+            />
           </div>
          
 

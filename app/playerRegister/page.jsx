@@ -9,7 +9,7 @@ import {
   getDownloadURL 
 } from "firebase/storage";
 import { firebaseApp } from "../../lib/firebase";
-import { ReceiptRefundIcon } from '@heroicons/react/24/outline';
+import { ReceiptRefundIcon,ArrowUpTrayIcon } from '@heroicons/react/24/outline';
 import PlayersCard from '../components/PlayersCard';
 
 function Loading() {
@@ -78,8 +78,8 @@ export default function Page() {
     jersey_size: 'Small',
     player_photo: '',
     player_role: 'All Rounder',
-    batting_style: '',
-    bowling_style: '',
+    batting_style: 'N/A',
+    bowling_style: 'N/A',
     approved: false,
   });
 
@@ -154,28 +154,37 @@ export default function Page() {
                 { label: 'Area', type: 'text', name: 'area', required: true },
                 { label: 'Jersey Name', type: 'text', name: 'jersey_name', required: true },
                 { label: 'Jersey No', type: 'number', name: 'jersey_no', required: true },
-                { label: 'Player Photo', type: 'file', name: 'player_photo', required: true },
               ].map((input, index) => (
                 <div key={index} className="flex flex-col justify-center w-full gap-2 text-sm">
                   <label>{input.required ? `${input.label} *`: `${input.label}`}</label>
                   <input
-                    className="outline-none ring-1 ring-indigo-100 p-2 h-9 w-full px-4 rounded-full bg-gray-200 file:rounded-full"
+                    className='outline-none ring-1 ring-indigo-100 p-2 h-9 w-full px-4 rounded-full bg-gray-200'
                     type={input.type}
                     name={input.name}
-                    value={input.type === 'file' ? null : playerData[input.name]}
+                    value={playerData[input.name]}
                     placeholder={input.label}
                     onChange={handleInputChange}
                     required={input.required}
                   />
                 </div>
               ))}
+
+              {/* File Upload */}
+              <div key='Player Photo' className="flex flex-col justify-center w-full gap-2 text-sm">
+                <label>Player Photo *</label>
+                <label htmlFor="file-upload" className="cursor-pointer flex items-center space-x-2 outline-none ring-1 ring-indigo-100 p-2 h-9 w-full px-4 rounded-full bg-gray-200">
+                  <ArrowUpTrayIcon width={17} />
+                  <span className="text-gray-500">Choose File</span>
+                </label>
+                <input id="file-upload" type="file" className="hidden" name='player_photo' onChange={handleInputChange} required />
+              </div>
               
               {/* Selects */}
               {[
                 { label: 'Jersey Size', name: 'jersey_size', options: ['Small', 'Medium', 'Large', 'Extra Large(XL)', 'XXL', 'XXXL'], required: true },
                 { label: 'Player Role', name: 'player_role', options: ['All Rounder', 'Batsman', 'Bowler'], required: true },
-                { label: 'Batting Style', name: 'batting_style', options: ['', 'Right', 'Left'] },
-                { label: 'Bowling Style', name: 'bowling_style', options: ['', 'Fast', 'Medium', 'Spin'] },
+                { label: 'Batting Style', name: 'batting_style', options: ['N/A', 'Right', 'Left'] },
+                { label: 'Bowling Style', name: 'bowling_style', options: ['N/A', 'Fast', 'Medium', 'Spin'] },
               ].map((select, index) => (
                 <div key={index} 
                   className={`flex flex-col justify-center w-full gap-1 text-sm 
