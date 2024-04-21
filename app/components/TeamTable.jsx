@@ -14,7 +14,7 @@ export default function TeamTable({ team_detail }) {
 
   useEffect(() => {
     const query = `select pl.* from player pl join team_players tp on tp.player_no = pl.id where tp.team_id = ${team_detail[0]}`;
-    fetch(`/api/player?query=${query}`)
+    fetch(`/api/select?query=${query}`)
       .then((response) => response.json())
       .then((data) => {
         setTeamData(data);
@@ -33,7 +33,7 @@ export default function TeamTable({ team_detail }) {
         setownerData(data);
       })
       .catch((error) => console.error(error));
-    fetch(`/api/player?query=${query1}`)
+    fetch(`/api/select?query=${query1}`)
       .then((response) => response.json())
       .then((data) => {
         setteamImage(data);

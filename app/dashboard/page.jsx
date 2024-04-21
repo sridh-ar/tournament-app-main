@@ -18,7 +18,7 @@ export default function Page() {
     const res = await validateToken();
     if (res) {
       setLoggedIn(true);
-      fetch("/api/player?query=select count(*) as playercount from player")
+      fetch("/api/select?query=select count(*) as playercount from player")
         .then((response) => response.json())
         .then((data) => setplayerCount(data[0].playercount))
         .catch((error) => console.error(error));

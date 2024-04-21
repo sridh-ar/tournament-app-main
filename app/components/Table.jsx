@@ -186,21 +186,13 @@ export default function Table({ selectedTeamModal }) {
 
       {/* Render new team modal */}
       {isOpen && (
-        <NewTeam
-          closeFunction={() => setIsOpen(false)}
-        />
+        <NewTeam closeFunction={() => setIsOpen(false)} />
       )}
 
       {/* Render new team player modal */}
       {isAddOpen && (
-        <NewTeamPlayer
-          closeFunction={() => {
-            setisAddOpen(false);
-            setisLoading(true);
-          }}
-          selectedTeam={selectedTeam}
-        />
+        <NewTeamPlayer closeFunction={() => setisAddOpen(false)} selectedTeam={selectedTeam} />
       )}
-    </div>
+    </div>  
   );
 }

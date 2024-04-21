@@ -39,7 +39,7 @@ export default function Home() {
 
   async function getRemainingSlots(){
     const query = `select count(*) as count from player`;
-    fetch(`/api/player?query=${query}`)
+    fetch(`/api/select?query=${query}`)
       .then((response) => response.json())
       .then((data) => {
         setremainingSlots(totalSlots - data[0].count);

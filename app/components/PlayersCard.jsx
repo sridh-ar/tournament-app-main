@@ -28,7 +28,7 @@ export default function PlayersCard({
 
   function handleApprove() {
     fetch(
-      `/api/player?query=select gpay_no,transaction_id from payment_details where player_no ='${id}'`
+      `/api/select?query=select gpay_no,transaction_id from payment_details where player_no ='${id}'`
     )
       .then((response) => response.json())
       .then((data) => {
@@ -39,7 +39,7 @@ export default function PlayersCard({
             )
           ) {
             fetch(
-              `/api/player?query=update player set approved = true where id ='${id}'`
+              `/api/update?query=update player set approved = true where id ='${id}'`
             )
               .then((response) => response.json())
               .then((data) => {
@@ -50,7 +50,7 @@ export default function PlayersCard({
         } else {
           if (confirm(`No Payment Data Found. Do you still want to approve?`)) {
             fetch(
-              `/api/player?query=update player set approved = true where id ='${id}'`
+              `/api/update?query=update player set approved = true where id ='${id}'`
             )
               .then((response) => response.json())
               .then((data) => {
@@ -59,7 +59,7 @@ export default function PlayersCard({
               .catch((error) => console.error(error));
           } else {
             if (confirm(`Do you want to Delete this Player?`)) {
-              fetch(`/api/player?query=delete from player where id ='${id}'`)
+              fetch(`/api/update?query=delete from player where id ='${id}'`)
                 .then((response) => response.json())
                 .then((data) => {
                   handleApproved();

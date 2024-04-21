@@ -11,7 +11,6 @@ export async function POST(request) {
 
   console.log(`[Insert_API] Request - `,req)
   console.log(`[Insert_API] tableName - `,tableName)
-  console.log(pgpHelpers.insert(req,null,{table:tableName}) + ' returning id')
 
   try {
     result = await db.oneOrNone(pgpHelpers.insert(req,null,{table:tableName}) + ' returning id');
