@@ -8,7 +8,7 @@ import { motion } from "framer-motion";
 import { validateToken } from "../lib/auth/auth";
 import Footer from "./components/Footer";
 
-const ApplicationName = process.env.NEXT_PUBLIC_APPLICATIONNAME || 'KPL'
+const ApplicationName = 'KPL'
 
 const container = {
   hidden: { opacity: 1, scale: 0, y: 300 },
