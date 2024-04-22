@@ -8,7 +8,7 @@ import { motion } from "framer-motion";
 import { validateToken } from "../lib/auth/auth";
 import Footer from "./components/Footer";
 
-const ApplicationName = process.env.NEXT_PUBLIC_APPLICATIONNAME || 'FBPL'
+const ApplicationName = process.env.NEXT_PUBLIC_APPLICATIONNAME || 'KPL'
 
 const container = {
   hidden: { opacity: 1, scale: 0, y: 300 },
@@ -29,7 +29,7 @@ export default function Home() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [remainingSlots, setremainingSlots] = useState(0);
   const [contactOpened, setcontactOpened] = useState(false);
-  const totalSlots = 190
+  const totalSlots = 180
 
   async function validateUser() {
     const res = await validateToken();
