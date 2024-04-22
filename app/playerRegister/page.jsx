@@ -246,7 +246,7 @@ export default function Page() {
                   whileHover={{ scale: 1.1 }}
                   disabled={!isTermAccepted}
                 >
-                  Pay to Register
+                  Click to Register
                 </motion.button>
               </div>
             </form>
