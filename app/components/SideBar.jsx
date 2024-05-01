@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 // Import icons from heroicons/react package
@@ -50,7 +51,7 @@ export default function SideBar({ setActiveMenu ,currentActiveMenu, playerCount 
     <div className="w-[18%] text-white flex flex-col items-center">
       {/* Logo */}
       {/* <div className="flex items-center justify-center p-1 my-2 bg-white rounded shadow"> */}
-        <img src="/New_Logo.png" alt="Next.js Logo" width={150} height={150} className=" my-4 ml-5"/>
+        <Image src="/New_Logo.png" alt="Next.js Logo" width={150} height={150} className=" my-4 ml-5"/>
         {/* <p className=" text-sm ml-2">FBLP League</p> */}
       {/* </div> */}
 

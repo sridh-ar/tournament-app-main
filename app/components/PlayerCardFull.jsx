@@ -1,4 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
+import Image from "next/image";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
 import { Meteors } from "./ui/meteors";
@@ -23,7 +24,7 @@ export default function PlayersCardFull({
     <div className="top-0 left-0 absolute w-screen h-screen z-50">
       <div className="relative bg-white">
         {/* BG Image */}
-        <img
+        <Image
           src="/stadium_bg.jpg"
           alt="Rounded avatar"
           width={1000}
