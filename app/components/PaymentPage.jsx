@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { motion } from "framer-motion";
 
 const inputNames = [
@@ -66,7 +65,7 @@ export default function PaymentPage({ id, submit }) {
       initial="hidden"
       animate="visible"
     >
-      <Image
+      <img
         src="/upi.png"
         alt="Next.js Logo"
         priority

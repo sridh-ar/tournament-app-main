@@ -1,5 +1,4 @@
 "use client";
-import Image from "next/image";
 import styles from "./page.module.css";
 import { PencilSquareIcon} from "@heroicons/react/24/outline";
 import Link from "next/link";
@@ -69,7 +68,7 @@ export default function Home() {
         variants={container}
       >
         <Link href={loggedIn ? "/dashboard" : "/signin"}>
-          <Image
+          <img
             // className={styles.logo}
             className="relative"
             src="/leo.png"
