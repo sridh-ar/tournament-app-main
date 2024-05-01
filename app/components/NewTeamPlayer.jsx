@@ -89,7 +89,10 @@ export default function NewTeamPlayer({ closeFunction, selectedTeam }) {
             <img src="/loader.svg" alt="" className="w-32" />
           </div>
           :
-          <div className="relative bg-white rounded-xl flex flex-col items-center w-[60%] h-full p-2">
+          <motion.div className="relative bg-white rounded-xl flex flex-col items-center w-[60%] h-full p-2"
+            initial={{scale:0,opacity:0}}
+            animate={{scale:1,opacity:1}}
+          >
             {/* Close Icon */}
             <div className=" bg-gray-300 shadow flex items-center justify-center rounded-full absolute top-8 cursor-pointer right-8 w-7 h-7 z-50">
               <XMarkIcon
@@ -153,7 +156,7 @@ export default function NewTeamPlayer({ closeFunction, selectedTeam }) {
                 </motion.button>
               </div>
             </form>
-          </div>
+          </motion.div>
         }
       </div>
     </>
