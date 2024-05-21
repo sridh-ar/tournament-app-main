@@ -87,12 +87,15 @@ export default function Home() {
         transition={{ ease: "easeIn", duration: 0.01 }}
         variants={itemAnimation}
       >
-        <a className="text-sm cursor-pointer mr-1 sm:w-full" href={remainingSlots <= 0 ? '#' : `/playerRegister`}>
-          Register for {ApplicationName}
+        <a className="text-sm tracking-wide cursor-pointer mr-1 sm:w-full" href={remainingSlots <= 0 ? '#' : `/playerRegister`}>
+        {"Register for "}  
+        <span className="text-xs">
+        {ApplicationName}
+        </span> 🏆
         </a>
-        <PencilSquareIcon height={20} width={20} />
+        {/* <PencilSquareIcon height={20} width={20} /> */}
       </motion.div >
-        <motion.span className="text-xs text-orange-600 mt-3"
+        <motion.span className="text-xs tracking-wide text-orange-600 mt-3"
           initial="hidden"
           animate="visible"
           transition={{ ease: "easeIn", duration: 0.5 }}
