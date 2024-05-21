@@ -83,7 +83,7 @@ export default function NewTeam({ closeFunction }) {
             <img src="/loader.svg" alt="" className="w-32" />
           </div>
           :
-          <motion.div className="relative bg-white rounded-xl flex flex-col items-center w-[70%] h-full p-2"
+          <motion.div className="relative bg-white rounded flex flex-col items-center w-[70%] h-full p-2"
             initial={{scale:0,opacity:0}}
             animate={{scale:1,opacity:1}}
           >
@@ -97,7 +97,7 @@ export default function NewTeam({ closeFunction }) {
               />
             </div>
 
-            <p className="font-semibold my-2">Team Register Form</p>
+            <p className="font-medium my-2 text-lg">📰 Team Registration</p>
 
             <form className="grid grid-cols-2 gap-3 p-5 w-full" onSubmit={handleSubmit}>
 

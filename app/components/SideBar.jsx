@@ -50,10 +50,10 @@ export default function SideBar({ setActiveMenu ,currentActiveMenu, playerCount 
   return (
     <div className="w-[18%] text-white flex flex-col items-center">
       {/* Logo */}
-      {/* <div className="flex items-center justify-center p-1 my-2 bg-white rounded shadow"> */}
-        <Image src="/New_Logo.png" alt="Next.js Logo" width={150} height={150} className=" my-4 ml-5"/>
+      <div className="flex w-full p-2 m-2 items-center justify-center">
+        <img src="/New_Logo.png" alt="Next.js Logo" className="ml-4"/>
         {/* <p className=" text-sm ml-2">FBLP League</p> */}
-      {/* </div> */}
+      </div>
 
       {/* DIvider */}
       <div className="w-[80%] h-[0.5px] bg-gray-200 mb-5"></div>
