@@ -103,7 +103,7 @@ export default function PlayersCardFull({
         </div>
       </div>
       {(isBgLoading && isPlayerLoading) && <div className="relative bg-white w-screen h-screen flex items-center justify-center">
-        <img src="/loading2.svg" alt="loader" className="w-36 h-36" />
+        <img src="/loading.gif" alt="loader" className="w-60" />
       </div>}
     </div>
   );
