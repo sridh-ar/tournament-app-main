@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { uploadBytes, ref, getStorage, getDownloadURL } from "firebase/storage";
 import { firebaseApp } from "../../lib/firebase";
+import { XMarkIcon } from "@heroicons/react/24/solid";
 import {
   ReceiptRefundIcon,
   ArrowUpTrayIcon,
@@ -140,7 +141,18 @@ export default function Page() {
       {!isLoading && !isSubmited && (
         <div className="bg-gray-200 p-3">
           <div className="bg-white rounded-xl flex flex-col items-center w-full p-2 py-4">
-            <p className="font-semibold my-2">Player Register Form</p>
+            {/* Close Icon */}
+            <div className=" bg-gray-300 shadow flex items-center justify-center rounded-full absolute top-8 cursor-pointer right-8 w-7 h-7 z-50">
+              <XMarkIcon
+                width={23}
+                height={23}
+                color="gray"
+                onClick={() => window.location.replace("/")}
+              />
+            </div>
+
+            {/* Actual Form Body */}
+            <p className="font-semibold tracking-wider my-3 text-lg">🎭 Player Registration</p>
             <form
               className="grid grid-cols-2 gap-3 p-5 w-full"
               onSubmit={handleSubmit}

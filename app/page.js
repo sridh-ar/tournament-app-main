@@ -80,7 +80,7 @@ export default function Home() {
         </Link>
       </motion.div>
       <motion.div
-        className="flex justify-center items-center transition-all bg-indigo-300 shadow px-6 py-1.5 rounded-full "
+        className="flex justify-center items-center transition-all bg-[#ffffff] shadow px-6 py-1.5 rounded-full "
         initial="hidden"
         animate="visible"
         whileHover={{ scale: 1.1 }}
