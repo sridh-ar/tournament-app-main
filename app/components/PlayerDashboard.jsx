@@ -17,7 +17,7 @@ const container = {
   },
 };
 
-const SearchBar = ({handleSearch}) => {
+const SearchBar = ({ handleSearch }) => {
   return (
     <div class="w-1/3 h-10 fixed z-20 my-0.5">
       <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -45,7 +45,7 @@ const SearchBar = ({handleSearch}) => {
       />
     </div>
   );
-}
+};
 
 export default function PlayerDashboard() {
   const [teamData, setTeamData] = useState([]);
@@ -86,7 +86,6 @@ export default function PlayerDashboard() {
 
   return (
     <div className="bg-gray-200 rounded shadow mx-5 my-3 overflow-y-auto p-1 w-full flex justify-center">
-
       <SearchBar handleSearch={(value) => handleSearch(value)} />
 
       <motion.div
@@ -96,13 +95,11 @@ export default function PlayerDashboard() {
         animate="visible"
         id="playersListPdf"
       >
-
-        {isLoading &&
-          <div className="col-span-2 flex justify-center">
-            <img src="/loader.svg" alt="" className="w-32" />
+        {isLoading && (
+          <div className="col-span-2 flex items-center justify-center w-full h-full">
+            <img src="/loading.gif" alt="loader" className="w-60" />
           </div>
-        }
-
+        )}
 
         {!isLoading &&
           filteredData.map((item) => (
@@ -124,7 +121,5 @@ export default function PlayerDashboard() {
           ))}
       </motion.div>
     </div>
-
-
   );
 }

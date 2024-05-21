@@ -6,13 +6,8 @@ import { useEffect, useState } from "react";
 import NewTeam from "./NewTeam";
 import NewTeamPlayer from "./NewTeamPlayer";
 import { motion } from "framer-motion";
-import { 
-  uploadBytes, 
-  ref, 
-  getStorage, 
-  getDownloadURL 
-} from "firebase/storage";
-import { firebaseApp } from  "../../lib/firebase/index";
+import { uploadBytes, ref, getStorage, getDownloadURL } from "firebase/storage";
+import { firebaseApp } from "../../lib/firebase/index";
 
 // Table component definition
 export default function Table({ selectedTeamModal }) {
@@ -60,7 +55,7 @@ export default function Table({ selectedTeamModal }) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "table_name": "team"
+        table_name: "team",
       },
       body: JSON.stringify(values),
     })
@@ -96,7 +91,6 @@ export default function Table({ selectedTeamModal }) {
   // JSX rendering
   return (
     <div className="bg-white rounded shadow m-5 overflow-y-auto p-1 w-full">
-      
       {/* Render table only when data is loaded */}
       {!isLoading && (
         <motion.table
@@ -122,13 +116,21 @@ export default function Table({ selectedTeamModal }) {
               variants={itemAnimation}
             >
               <td class="text-center relative">
-                <img src={item.team_photo} alt="Centered Image" className="w-8 h-8 absolute rounded inset-0 top-2 left-2" />
-                
+                <img
+                  src={item.team_photo}
+                  alt="Centered Image"
+                  className="w-8 h-8 absolute rounded inset-0 top-2 left-2"
+                />
+
                 <button
-                    className="capitalize text-start"
-                    onClick={() => selectedTeamModal([item.id, item.team_name, item.owner])}
+                  className="capitalize text-start"
+                  onClick={() =>
+                    selectedTeamModal([item.id, item.team_name, item.owner])
+                  }
                 >
-                    {item.team_name.length > 15 ? `${item.team_name.slice(0, 15)}...` : item.team_name}
+                  {item.team_name.length > 15
+                    ? `${item.team_name.slice(0, 15)}...`
+                    : item.team_name}
                 </button>
               </td>
               <td className="capitalize">
@@ -169,8 +171,8 @@ export default function Table({ selectedTeamModal }) {
 
       {/* Render loading indicator */}
       {isLoading && (
-        <div className="flex items-center justify-center w-full h-full bg-gray-100">
-          <img src="/loading2.svg" alt="loader" className="w-36 h-36" />
+        <div className="flex items-center justify-center w-full h-full">
+          <img src="/loading.gif" alt="loader" className="w-60" />
         </div>
       )}
 
@@ -185,14 +187,15 @@ export default function Table({ selectedTeamModal }) {
       )}
 
       {/* Render new team modal */}
-      {isOpen && (
-        <NewTeam closeFunction={() => setIsOpen(false)} />
-      )}
+      {isOpen && <NewTeam closeFunction={() => setIsOpen(false)} />}
 
       {/* Render new team player modal */}
       {isAddOpen && (
-        <NewTeamPlayer closeFunction={() => setisAddOpen(false)} selectedTeam={selectedTeam} />
+        <NewTeamPlayer
+          closeFunction={() => setisAddOpen(false)}
+          selectedTeam={selectedTeam}
+        />
       )}
-    </div>  
+    </div>
   );
 }

@@ -3,9 +3,14 @@
 import { useState } from "react";
 import PlayersCardFull from "./PlayerCardFull";
 import { motion } from "framer-motion";
-import { CheckCircleIcon, ClockIcon,PhoneIcon,AcademicCapIcon,UserGroupIcon } from "@heroicons/react/24/outline";
+import {
+  CheckCircleIcon,
+  ClockIcon,
+  PhoneIcon,
+  AcademicCapIcon,
+  UserGroupIcon,
+} from "@heroicons/react/24/outline";
 import { CardBody, CardContainer, CardItem } from "./ui/3d-card";
-
 
 export default function PlayersCard({
   name,
@@ -20,7 +25,7 @@ export default function PlayersCard({
   handleApproved,
   battingStyle,
   bowlingStyle,
-  fromRegisterMenu = false
+  fromRegisterMenu = false,
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -72,16 +77,25 @@ export default function PlayersCard({
   }
   return (
     <div>
-      <CardContainer >
-        <CardBody className={`bg-white shadow p-3 mx-2 flex h-full items-center  rounded-md ${fromRegisterMenu ? 'w-[100%]' : 'w-[90%]'}`}>
+      <CardContainer>
+        <CardBody
+          className={`bg-white shadow p-3 mx-2 flex h-full items-center  rounded-md ${
+            fromRegisterMenu ? "w-[100%]" : "w-[90%]"
+          }`}
+        >
           <CardItem
             translateZ="50"
             className="flex items-center justify-center"
           >
-            {isLoading && <img src="/loading2.svg" className="absolute rounded-full scale-50" />}
-            <img 
-              src={image} 
-              alt="Rounded avatar" 
+            {isLoading && (
+              <img
+                src="/loading.gif"
+                className="absolute rounded-full scale-50"
+              />
+            )}
+            <img
+              src={image}
+              alt="Rounded avatar"
               loading="eager"
               onLoad={() => setIsLoading(false)}
               onClick={() => setIsOpen(true)}
@@ -92,67 +106,71 @@ export default function PlayersCard({
           {/* Second Column */}
           <div onClick={() => setIsOpen(true)}>
             {/* Name */}
-            <CardItem className="text-lg font-semibold text-gray-600 capitalize mb-2" translateZ="50">
+            <CardItem
+              className="text-lg font-semibold text-gray-600 capitalize mb-2"
+              translateZ="50"
+            >
               {name.length > 20 ? name.slice(0, 20) + ".." : name}
             </CardItem>
 
             {/* Phone */}
-            <CardItem className="flex items-center justify-center my-1" translateZ="40">
+            <CardItem
+              className="flex items-center justify-center my-1"
+              translateZ="40"
+            >
               <span className=" w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center mx-2">
                 <PhoneIcon width={20} height={20} />
               </span>
 
               <div className="text-gray-600 text-sm">
                 Phone
-                <p className="font-semibold">
-                  {contact}
-                </p>
+                <p className="font-semibold">{contact}</p>
               </div>
             </CardItem>
 
             {/* Role */}
-            <CardItem className="flex items-center justify-center my-1" translateZ="50">
+            <CardItem
+              className="flex items-center justify-center my-1"
+              translateZ="50"
+            >
               <span className=" w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center mx-2">
                 <AcademicCapIcon width={20} height={20} />
               </span>
 
               <div className="text-gray-600 text-sm">
                 Role
-                <p className="font-semibold">
-                  {role}
-                </p>
+                <p className="font-semibold">{role}</p>
               </div>
             </CardItem>
 
             {/* Team */}
-            <CardItem className="flex items-center justify-center my-1" translateZ="40">
+            <CardItem
+              className="flex items-center justify-center my-1"
+              translateZ="40"
+            >
               <span className=" w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center mx-2">
                 <UserGroupIcon width={20} height={20} />
               </span>
 
               <div className="text-gray-600 text-sm">
                 Team
-                <p className="font-semibold">
-                  {team}
-                </p>
+                <p className="font-semibold">{team}</p>
               </div>
             </CardItem>
           </div>
         </CardBody>
 
         {/* Pending or Approve */}
-        {!fromRegisterMenu && (approved ?
-          (
+        {!fromRegisterMenu &&
+          (approved ? (
             <CardItem className="absolute top-2 right-10" translateZ="40">
-              <CheckCircleIcon
-                width={25}
-                height={25}
-                color="green"
-              />
+              <CheckCircleIcon width={25} height={25} color="green" />
             </CardItem>
-          )
-          : (
-            <CardItem className="cursor-pointer absolute top-2 right-10" translateZ="40">
+          ) : (
+            <CardItem
+              className="cursor-pointer absolute top-2 right-10"
+              translateZ="40"
+            >
               <ClockIcon
                 width={25}
                 height={25}
@@ -160,24 +178,23 @@ export default function PlayersCard({
                 onClick={handleApprove}
               />
             </CardItem>
-
           ))}
       </CardContainer>
 
-       {/* Full Screen */}
-       {!fromRegisterMenu && isOpen == true && (
-          <PlayersCardFull
-            name={name}
-            id={id}
-            role={role}
-            team={team}
-            area={area}
-            battingStyle={battingStyle}
-            bowlingStyle={bowlingStyle}
-            image={image}
-            closeModal={() => setIsOpen(false)}
-          />
-        )}
+      {/* Full Screen */}
+      {!fromRegisterMenu && isOpen == true && (
+        <PlayersCardFull
+          name={name}
+          id={id}
+          role={role}
+          team={team}
+          area={area}
+          battingStyle={battingStyle}
+          bowlingStyle={bowlingStyle}
+          image={image}
+          closeModal={() => setIsOpen(false)}
+        />
+      )}
     </div>
   );
 }
