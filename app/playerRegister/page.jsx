@@ -139,7 +139,11 @@ export default function Page() {
       {isLoading && <Loading />}
       {isSubmited && <ThanksPage />}
       {!isLoading && !isSubmited && (
-        <div className="bg-gray-200 p-3">
+        <motion.div 
+          className="bg-gray-200 p-3"
+          initial={{scale:0,opacity:0}}
+          animate={{scale:1,opacity:1}}
+        >
           <div className="bg-white rounded-xl flex flex-col items-center w-full p-2 py-4">
             {/* Close Icon */}
             <div className=" bg-gray-300 shadow flex items-center justify-center rounded-full absolute top-10 cursor-pointer right-8 w-7 h-7 z-50">
@@ -366,7 +370,7 @@ export default function Page() {
               </div>
             </form>
           </div>
-        </div>
+        </motion.div>
       )}
     </>
   );
