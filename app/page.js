@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 import { validateToken } from "../lib/auth/auth";
 import Footer from "./components/Footer";
 
-const ApplicationName = 'KPL'
+const ApplicationName = 'TVKPL'
 
 const container = {
   hidden: { opacity: 1, scale: 0, y: 300 },
