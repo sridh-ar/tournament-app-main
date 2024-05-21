@@ -1,4 +1,4 @@
-const ApplicationName = 'KPL'
+const ApplicationName = 'TVKPL'
 
 export default function Footer() {
     return (
