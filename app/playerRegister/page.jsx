@@ -142,7 +142,7 @@ export default function Page() {
         <div className="bg-gray-200 p-3">
           <div className="bg-white rounded-xl flex flex-col items-center w-full p-2 py-4">
             {/* Close Icon */}
-            <div className=" bg-gray-300 shadow flex items-center justify-center rounded-full absolute top-8 cursor-pointer right-8 w-7 h-7 z-50">
+            <div className=" bg-gray-300 shadow flex items-center justify-center rounded-full absolute top-10 cursor-pointer right-8 w-7 h-7 z-50">
               <XMarkIcon
                 width={23}
                 height={23}
@@ -227,17 +227,17 @@ export default function Page() {
                   htmlFor="file-upload"
                   className="cursor-pointer flex items-center space-x-2 outline-none ring-1 ring-indigo-100 p-2 h-9 w-full px-4 rounded-full bg-gray-200"
                 >
-                  <ArrowUpTrayIcon width={17} />
-                  <span className="text-gray-500">Choose File</span>
+                  <ArrowUpTrayIcon width={37} />
+                  {/* <span className="text-gray-500">Choose File</span> */}
+                  <input
+                    id="file-upload"
+                    type="file"
+                    className="file:hidden"
+                    name="player_photo"
+                    onChange={handleInputChange}
+                    required
+                  />
                 </label>
-                <input
-                  id="file-upload"
-                  type="file"
-                  className="hidden"
-                  name="player_photo"
-                  onChange={handleInputChange}
-                  required
-                />
               </div>
 
               {/* Selects */}
