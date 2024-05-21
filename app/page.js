@@ -42,7 +42,7 @@ export default function Home() {
       .then((response) => response.json())
       .then((data) => {
         setremainingSlots(totalSlots - data[0].count);
-        setisLoading(false);
+        // setisLoading(false);
       })
       .catch((error) => console.error(error));
   }
