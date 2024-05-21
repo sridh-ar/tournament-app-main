@@ -174,9 +174,9 @@ export default function Page() {
                 <label>Player Photo *</label>
                 <label htmlFor="file-upload" className="cursor-pointer flex items-center space-x-2 outline-none ring-1 ring-indigo-100 p-2 h-9 w-full px-4 rounded-full bg-gray-200">
                   <ArrowUpTrayIcon width={17} />
-                  {/* <span className="text-gray-500">Choose File</span> */}
-                  <input id="file-upload" type="file" className="file:hidden" name='player_photo' onChange={handleInputChange} required />
+                  <span className="text-gray-500">Choose File</span>
                 </label>
+                <input id="file-upload" type="file" className="hidden" name='player_photo' onChange={handleInputChange} required />
               </div>
               
               {/* Selects */}
