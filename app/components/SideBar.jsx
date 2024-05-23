@@ -7,8 +7,9 @@ import {
   UserGroupIcon,
   ArrowRightOnRectangleIcon,
   BugAntIcon,
-  ChatBubbleOvalLeftEllipsisIcon
-} from "@heroicons/react/24/solid";
+  ChatBubbleOvalLeftEllipsisIcon,
+  CogIcon
+} from "@heroicons/react/24/outline";
 
 // SideBarItem component
 const SideBarItem = ({ isActive, name, setActiveMenu, playerCount = null}) => {
@@ -28,10 +29,11 @@ const SideBarItem = ({ isActive, name, setActiveMenu, playerCount = null}) => {
         </>
       )}
       {/* Render icon based on name */}
-      {name === "Dashboard" && <HomeModernIcon className="w-4 h-4 mr-2" color={isActive ? "#54AAB3" : ""} />}
-      {name === "Players" && <UserGroupIcon className="w-4 h-4 mr-2" color={isActive ? "#54AAB3" : ""}/>}
-      {name === "Support" && <ChatBubbleOvalLeftEllipsisIcon className="w-4 h-4 mr-2" color={isActive ? "#54AAB3" : ""}/>}
-      {name === "Sign Out" && <ArrowRightOnRectangleIcon className="w-4 h-4 mr-2" color={isActive ? "#54AAB3" : ""}/>}
+      {name === "Dashboard" && <HomeModernIcon className="w-5 h-5 mr-3" color={isActive ? "#54AAB3" : ""} />}
+      {name === "Players" && <UserGroupIcon className="w-5 h-5 mr-3" color={isActive ? "#54AAB3" : ""}/>}
+      {name === "Admin" && <CogIcon className="w-5 h-5 mr-3" color={isActive ? "#54AAB3" : ""}/>}
+      {name === "Support" && <ChatBubbleOvalLeftEllipsisIcon className="w-5 h-5 mr-3" color={isActive ? "#54AAB3" : ""}/>}
+      {name === "Sign Out" && <ArrowRightOnRectangleIcon className="w-5 h-5 mr-3" color={isActive ? "#54AAB3" : ""}/>}
       {`${name} ${playerCount ? `(${playerCount})` : ''}`}
     </div>
   );
@@ -74,6 +76,11 @@ export default function SideBar({ setActiveMenu ,currentActiveMenu, playerCount 
        {/* DIvider */}
        <div className="w-[80%] h-[0.5px] bg-gray-200 my-5"></div>
 
+       <SideBarItem
+        isActive={currentActiveMenu === "Admin"}
+        name="Admin"
+        setActiveMenu={(name) => setActiveMenu(name)}
+      />
        <SideBarItem
         isActive={currentActiveMenu === "Support"}
         name="Support"
