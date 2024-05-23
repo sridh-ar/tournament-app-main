@@ -1,13 +1,10 @@
-const ApplicationName = 'TVKPL'
+import { useSelector } from "react-redux";
 
 export default function Footer() {
+    const configValues = useSelector((state) => state.config.value) || [];
     return (
         <footer class="p-4 mt-5 bg-white md:p-8 lg:p-10 dark:bg-gray-800 w-full shadow">
             <div class="mx-auto max-w-screen-xl text-center">
-                {/* <a href="#" class="flex justify-center items-center text-2xl font-semibold text-gray-900 dark:text-white">
-                    <img src="/cricket.svg" alt="Tropy" className=" h-14 mx-1" />
-                    {ApplicationName}
-                </a> */}
                 <p class="my-3 mt-0 text-gray-500 dark:text-gray-400">Register for exciting competitions, showcase your skills, and compete for glory in our upcoming events.</p>
                 <ul class="flex flex-wrap justify-center items-center mb-6 text-gray-900 dark:text-white">
                     <li>
@@ -23,7 +20,13 @@ export default function Footer() {
                         <a href="/cancellation-refund" class="mr-4 hover:underline md:mr-6">Cancellation & Refund Policy</a>
                     </li>
                 </ul>
-                <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2024-2025 <a href="/" class="hover:underline">{ApplicationName}™</a>. All Rights Reserved.</span>
+                <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">
+                    © 2024-2025{" "}
+                    <a href="/" class="hover:underline">
+                        {configValues.appName}™
+                    </a>
+                    . All Rights Reserved.
+                </span>
             </div>
         </footer>
     );

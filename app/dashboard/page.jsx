@@ -7,11 +7,13 @@ import SideBar from "../components/SideBar";
 import Table from "../components/Table";
 import TeamTable from "../components/TeamTable";
 import AdminMenu from "../components/Admin/AdminMenu";
+import { Provider } from 'react-redux';
+import store from '../../lib/redux/stateVariables';
+import { Toaster } from 'react-hot-toast';
 
 export default function Page() {
   const [category, setCategory] = useState("Dashboard");
   const [loggedIn, setLoggedIn] = useState(false);
-  const [playerCount, setplayerCount] = useState(0);
   const [selectedTeam, setselectedTeam] = useState([]);
   const router = useRouter();
 
@@ -19,10 +21,6 @@ export default function Page() {
     const res = await validateToken();
     if (res) {
       setLoggedIn(true);
-      fetch("/api/select?query=select count(*) as playercount from player")
-        .then((response) => response.json())
-        .then((data) => setplayerCount(data[0].playercount))
-        .catch((error) => console.error(error));
     } else {
       setLoggedIn(false);
       router.replace("/");
@@ -35,7 +33,11 @@ export default function Page() {
 
   if (loggedIn) {
     return (
+      <Provider store={store}>
       <div className="flex w-full h-screen bg-[#54AAB3]">
+        {/* Toast */}
+        <Toaster />
+
         {/* SideBar */}
         <SideBar
           setActiveMenu={(category) => {
@@ -43,7 +45,6 @@ export default function Page() {
             setselectedTeam([]);
           }}
           currentActiveMenu={category}
-          playerCount={playerCount}
         />
 
         {/* Table Dashboard */}
@@ -59,6 +60,7 @@ export default function Page() {
         {/* Admin Modal */}
         {category === "Admin" && <AdminMenu /> }
       </div>
+      </Provider>
     );
   }
 }

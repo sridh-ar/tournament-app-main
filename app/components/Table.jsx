@@ -90,7 +90,7 @@ export default function Table({ selectedTeamModal }) {
 
   // JSX rendering
   return (
-    <div className="bg-white rounded shadow m-5 overflow-y-auto p-1 w-full">
+    <div className="bg-gray-200 rounded shadow ml-5 overflow-y-auto p-1 w-full">
       {/* Render table only when data is loaded */}
       {!isLoading && (
         <motion.table

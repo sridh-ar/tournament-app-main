@@ -10,6 +10,9 @@ import {
   ChatBubbleOvalLeftEllipsisIcon,
   CogIcon
 } from "@heroicons/react/24/outline";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { updateConfigStateValue } from "../../lib/redux/stateVariables";
 
 // SideBarItem component
 const SideBarItem = ({ isActive, name, setActiveMenu, playerCount = null}) => {
@@ -39,9 +42,28 @@ const SideBarItem = ({ isActive, name, setActiveMenu, playerCount = null}) => {
   );
 };
 
-export default function SideBar({ setActiveMenu ,currentActiveMenu, playerCount }) {
+export default function SideBar({ setActiveMenu ,currentActiveMenu}) {
+  const [playersCount, setPlayersCount] = useState(0)
   const router = useRouter();
+  const dispatch = useDispatch();
 
+  async function initialDataRetrival() {
+    fetch("/api/dashboard", { method: "GET" })
+      .then((response) => response.json())
+      .then(result => {
+        const configObject = result.reduce((accumulator, current) => {
+          accumulator[current.config_name] = current.config_value;
+          return accumulator;
+        }, {});
+
+        setPlayersCount(configObject.totalRegisteredPlayers)
+        dispatch(updateConfigStateValue(configObject));
+      })
+  }
+
+  useEffect(() => {
+    initialDataRetrival();
+  },[])
   function handleLogout() {
     if (confirm("Do you want to Logout?")) {
       localStorage.removeItem("aauutthh");
@@ -70,7 +92,7 @@ export default function SideBar({ setActiveMenu ,currentActiveMenu, playerCount 
         isActive={currentActiveMenu === "Players"}
         name="Players"
         setActiveMenu={(name) => setActiveMenu(name)}
-        playerCount = {playerCount}
+        playerCount = {playersCount}
       />
 
        {/* DIvider */}
