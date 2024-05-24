@@ -1,3 +1,4 @@
+"use client"
 import Footer from "../components/Footer";
 
 const email = process.env.EMAIL || 'sairam.sr556@gmail.com'
