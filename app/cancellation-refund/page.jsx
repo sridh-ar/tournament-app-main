@@ -1,5 +1,5 @@
 "use client"
-import Footer from "../components/Footer";
+// import Footer from "../components/Footer";
 
 const email = process.env.EMAIL || "sairamanath@gmail.com";
 const cancel_date = process.env.CANCEL_DATE || "5";
@@ -75,7 +75,7 @@ export default function page() {
         </div>
       </div>
       {/* <!-- End Content --> */}
-      <Footer />
+      {/* <Footer /> */}
     </main>
   );
 }

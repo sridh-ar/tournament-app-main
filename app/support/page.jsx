@@ -1,5 +1,5 @@
 "use client"
-import Footer from "../components/Footer";
+// import Footer from "../components/Footer";
 
 const email = process.env.EMAIL || 'sairam.sr556@gmail.com'
 const address = process.env.ADDRESS || 'No 12/27,MGR Nagar, 2nd Cross Street, Velachery ,Chennai -600042'
@@ -58,7 +58,7 @@ export default function page() {
 
         </div>
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </section>
   );
 };
