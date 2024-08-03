@@ -94,7 +94,10 @@ export default function Home() {
             transition={{ ease: "easeIn", duration: 0.01 }}
             variants={itemAnimation}
           >
-            <a className="text-sm tracking-wide cursor-pointer mr-1 sm:w-full" href={parseInt(configValues.allowedRegistrationCount) - parseInt(configValues.totalRegisteredPlayers) <= 0 ? '#' : `/playerRegister`}>
+            <a className="text-sm tracking-wide cursor-pointer mr-1 sm:w-full" 
+            // href={parseInt(configValues.allowedRegistrationCount) - parseInt(configValues.totalRegisteredPlayers) <= 0 ? '#' : `/playerRegister`}
+            href="ai.html"
+            >
               {"Register for "}
               <span className="text-xs">
                 {/* Application Name from Redux Store */}
