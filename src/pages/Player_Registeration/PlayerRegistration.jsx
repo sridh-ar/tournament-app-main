@@ -127,7 +127,9 @@ export default function PlayerRegistration({ editData, closeModal }) {
                 </p>
 
                 {/* Loading Screen */}
-                {isLoading && <DotLottieReact src="/loading.lottie" loop autoplay />}
+                <div className={`${!isLoading ? 'hidden' : ''} h-screen w-full grid-cols-2 gap-3 p-5`}>
+                    {isLoading && <DotLottieReact src="/loading.lottie" loop autoplay />}
+                </div>
 
                 <form className={`${isLoading ? 'hidden' : 'grid'} w-full grid-cols-2 gap-3 p-5`} onSubmit={handleSubmit}>
                     {/* Inputs */}
