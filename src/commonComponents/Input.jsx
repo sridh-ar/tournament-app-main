@@ -44,6 +44,7 @@ export default function Input({
 
     if (type == 'file') {
         const [uploadedFile, setUploadedFile] = useState(null);
+        const [imageData, setimageData] = useState(null);
 
         const handleInputChange = async (e) => {
             let imageResult = e.target.files[0];
@@ -54,6 +55,7 @@ export default function Input({
                     const imageUrl = reader.result?.toString() || '';
                     imageElement.src = imageUrl;
 
+                    setimageData(e.target.value);
                     setUploadedFile(imageUrl);
                 });
                 reader.readAsDataURL(imageResult);
@@ -75,6 +77,7 @@ export default function Input({
                             className={`z-10 ml-3 h-full w-full opacity-0`}
                             type={type}
                             name={idName}
+                            value={imageData}
                             onChange={handleInputChange}
                             required={required}
                             disabled={disabled}

@@ -47,7 +47,13 @@ export default function Home() {
             <div className="flex h-2/3 flex-col items-center justify-center">
                 {/* Logo Image */}
                 <a href="/Dashboard">
-                    <img className="relative m-5 outline-none" src={configValues.logo} alt="Next.js Logo" width={250} height={250} />
+                    <img
+                        className="relative m-5 h-72 object-contain outline-none"
+                        src={configValues.logo}
+                        alt="Next.js Logo"
+                        width={250}
+                        height={250}
+                    />
                 </a>
 
                 {/* Button */}

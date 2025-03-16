@@ -13,12 +13,12 @@ import { fetchAPI, uploadToGit } from '../../utils/commonServices';
 import makePayment from './RazorPay_Gateway';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
+import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 
 export default function PlayerRegistration({ editData, closeModal }) {
     // States
     const [isLoading, setisLoading] = useState(true);
     const [isTermAccepted, setisTermAccepted] = useState(false);
-    const [isUploading, setisUploading] = useState(false);
     const navigate = useNavigate();
     const [playerData, setPlayerData] = useState(
         editData || {
@@ -45,7 +45,7 @@ export default function PlayerRegistration({ editData, closeModal }) {
 
         // handle file for upload
         if (name == 'player_photo') {
-            setisUploading(true);
+            setisLoading(true);
             let imageResult = e.target.files[0];
             if (imageResult && ['jpg', 'jpeg', 'png'].includes(imageResult.type.split('/').pop())) {
                 // const storage = getStorage(firebaseApp);
@@ -67,11 +67,11 @@ export default function PlayerRegistration({ editData, closeModal }) {
                     } catch (error) {
                         toast.error(error.message);
                     }
-                    setisUploading(false);
+                    setisLoading(false);
                 };
             } else {
                 toast.error('Please upload image in jpg, jpeg, png formats');
-                setisUploading(false);
+                setisLoading(false);
                 return;
             }
         }
@@ -90,16 +90,17 @@ export default function PlayerRegistration({ editData, closeModal }) {
         try {
             fetchAPI('/player/createorupdate', 'POST', playerData).then((data) => {
                 localStorage.setItem('playerData', JSON.stringify(playerData));
-                console.log(data);
                 let uniqueId = data['id'];
-                setisLoading(false);
+                setTimeout(() => {
+                    setisLoading(false);
+                }, 5000);
                 if (editData) {
                     closeModal();
                     window.location.reload();
                 } else {
                     // window.location.replace('/upi');
                     // navigate('/upi', { replace: true, state: { id: uniqueId } });
-                    makePayment(playerData.name, playerData.contact_number, 111, uniqueId);
+                    makePayment(playerData.name, playerData.contact_number, 1, uniqueId);
                     // window.location.replace('/thanks');
                 }
             });
@@ -117,10 +118,6 @@ export default function PlayerRegistration({ editData, closeModal }) {
         setTimeout(() => setisLoading(false), 500);
     }, []);
 
-    if (isLoading) {
-        return <LoadingScreen className="absolute z-[100] bg-white" />;
-    }
-
     return (
         <div className="relative bg-gray-200 p-3">
             <div className="flex w-full flex-col items-center rounded-xl bg-white p-2 py-4">
@@ -129,9 +126,10 @@ export default function PlayerRegistration({ editData, closeModal }) {
                     {editData ? '📝 Edit Player Details' : `🎭 Player Registration`}
                 </p>
 
-                {isUploading && <LoadingScreen className="absolute z-[100] bg-white opacity-50" />}
+                {/* Loading Screen */}
+                {isLoading && <DotLottieReact src="/loading.lottie" loop autoplay />}
 
-                <form className="grid w-full grid-cols-2 gap-3 p-5" onSubmit={handleSubmit}>
+                <form className={`${isLoading ? 'hidden' : 'grid'} w-full grid-cols-2 gap-3 p-5`} onSubmit={handleSubmit}>
                     {/* Inputs */}
                     {registration.inputColumns.map((input, index) => (
                         <Input
@@ -213,7 +211,7 @@ export default function PlayerRegistration({ editData, closeModal }) {
 
                     {/* Submit Button and cancel button */}
                     <div className="col-span-2 flex items-center justify-center gap-5">
-                        <Button title="Submit" className="col-span-2 bg-black px-10 text-white" type="submit" isLoading={isUploading} />
+                        <Button title="Submit" className="col-span-2 bg-black px-10 text-white" type="submit" isLoading={isLoading} />
                         <Button
                             title="Cancel"
                             className="col-span-2 bg-gray-300 px-10 text-black"
