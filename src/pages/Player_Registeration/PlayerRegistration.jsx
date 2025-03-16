@@ -91,16 +91,13 @@ export default function PlayerRegistration({ editData, closeModal }) {
             fetchAPI('/player/createorupdate', 'POST', playerData).then((data) => {
                 localStorage.setItem('playerData', JSON.stringify(playerData));
                 let uniqueId = data['id'];
-                setTimeout(() => {
-                    setisLoading(false);
-                }, 5000);
                 if (editData) {
                     closeModal();
                     window.location.reload();
                 } else {
                     // window.location.replace('/upi');
                     // navigate('/upi', { replace: true, state: { id: uniqueId } });
-                    makePayment(playerData.name, playerData.contact_number, 1, uniqueId);
+                    makePayment(playerData.name, playerData.contact_number, 1, uniqueId, setisLoading);
                     // window.location.replace('/thanks');
                 }
             });

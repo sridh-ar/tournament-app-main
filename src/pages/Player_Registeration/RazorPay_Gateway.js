@@ -16,8 +16,9 @@ async function initializeRazorpay() {
     });
 }
 
-export default async function makePayment(name, contact, amount, id) {
+export default async function makePayment(name, contact, amount, id, setIsLoadingCallback) {
     return new Promise(async (resolve, reject) => {
+        setIsLoadingCallback(true);
         const res = await initializeRazorpay();
 
         if (!res) {
@@ -50,7 +51,6 @@ export default async function makePayment(name, contact, amount, id) {
             // image: '/leo.png',
             handler: async function (response) {
                 try {
-                    console.log(response);
                     await fetchAPI('/payment/verify-payment', 'POST', {
                         razorpay_order_id: response.razorpay_order_id,
                         razorpay_payment_id: response.razorpay_payment_id,
@@ -65,6 +65,13 @@ export default async function makePayment(name, contact, amount, id) {
             prefill: {
                 name: name,
                 contact: contact,
+            },
+            modal: {
+                escape: false, // Prevents closing via escape key
+                ondismiss: function () {
+                    console.log('Payment canceled by user.');
+                    setIsLoadingCallback(false);
+                },
             },
         };
 
