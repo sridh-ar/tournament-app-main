@@ -97,7 +97,7 @@ export default function PlayerRegistration({ editData, closeModal }) {
                 } else {
                     // window.location.replace('/upi');
                     // navigate('/upi', { replace: true, state: { id: uniqueId } });
-                    makePayment(playerData.name, playerData.contact_number, 1, uniqueId, setisLoading);
+                    makePayment(playerData.name, playerData.contact_number, 111, uniqueId, setisLoading);
                     // window.location.replace('/thanks');
                 }
             });
