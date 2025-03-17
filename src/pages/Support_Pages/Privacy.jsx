@@ -6,7 +6,7 @@ const email = process.env.EMAIL || 'sairamanath@gmail.com';
 export default function Privacy() {
     return (
         <main className="bg-white">
-            {/* <!-- Heading --> */}
+            {/* <!-- Heading  --> */}
             <div className="mx-auto px-4 pb-6 pt-10 text-center sm:px-6 md:max-w-screen-sm lg:px-8">
                 <h1 className="text-2xl font-bold md:text-4xl dark:text-white">Privacy &amp; Policy</h1>
             </div>
